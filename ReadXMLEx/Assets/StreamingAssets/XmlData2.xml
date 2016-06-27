@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<books>
+	<book id="1">
+		<title>Papervision3D Essentials</title>
+		<image>http://paultondeur.com/files/2010/UnityExternalJSONXML/Papervision3DEssentials.jpg</image>
+		<authors>
+			<author id="1">Paul Tondeur</author>
+			<author id="2">Jeff Winder</author>
+		</authors>
+		<description><![CDATA[<p>Create interactive <b>Papervision3D</b> applications with stunning effects and powerful animations</p>]]></description>
+	</book>
+	<book id="2">
+		<title>Unity Game Development Essentials</title>
+		<image>http://paultondeur.com/files/2010/UnityExternalJSONXML/UnityGameDevelopmentEssentials.jpg</image>
+		<authors>
+			<author id="3">Will Goldstone</author>
+		</authors>
+		<description>
+		<![CDATA[
+		<p>Build fully functional, professional 3D games with realistic environments, sound, <i>dynamic effects</i>, and more!</p>
+		]]>
+		</description>
+	</book>
+</books>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ROOT>
+	<Field maxValue="20" minValue="10" name="일번" id="1"/>
+	<Field maxValue="30" minValue="15" name="이번" id="2"/>
+	<Field maxValue="40" minValue="20" name="삼번" id="3"/>
+</ROOT>
