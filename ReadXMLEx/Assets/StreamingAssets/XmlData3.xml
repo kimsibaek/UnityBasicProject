@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Items>
+	<Field sell_cost="100" buy_cost="150" icon="Item_01" name="아이템01" id="1"/>
+	<Field sell_cost="150" buy_cost="200" icon="Item_02" name="아이템02" id="2"/>
+	<Field sell_cost="200" buy_cost="250" icon="Item_03" name="아이템03" id="3"/>
+	<Field sell_cost="250" buy_cost="300" icon="Item_04" name="아이템04" id="4"/>
+	<Field sell_cost="300" buy_cost="350" icon="Item_05" name="아이템05" id="5"/>
+	<Field sell_cost="350" buy_cost="400" icon="Item_06" name="아이템06" id="6"/>
+	<Field sell_cost="400" buy_cost="450" icon="Item_07" name="아이템07" id="7"/>
+	<Field sell_cost="450" buy_cost="500" icon="Item_08" name="아이템08" id="8"/>
+	<Field sell_cost="500" buy_cost="550" icon="Item_09" name="아이템09" id="9"/>
+</Items>
