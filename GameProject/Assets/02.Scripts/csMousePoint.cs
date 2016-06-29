@@ -10,19 +10,32 @@ public class csMousePoint : MonoBehaviour {
 	public Material Mat;
 	public Material Mat2;
 
+	bool bMouseDown;
+
+	Vector3 scrSpace;
+	Vector3 offset;
+
+	float frontx;
+	float fronty;
+	float tailx;
+	float taily;
+
+
+
 	private GameObject TileState;
 	// Use this for initialization
 	void Start () {
 		blankTile = transform.gameObject;
 		Tile = blankTile;
 	}
-
-	
+		
 	// Update is called once per frame
 	void Update () {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
+		
+		/*
 		if(Input.GetButtonDown("Fire1")){
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit, Mathf.Infinity, currentMask)) {
 				//Debug.Log (hit.collider.gameObject.name);
 
@@ -44,6 +57,8 @@ public class csMousePoint : MonoBehaviour {
 				Tile = blankTile;
 			}
 		}
+*/
 
 	}
+
 }
