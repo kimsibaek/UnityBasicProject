@@ -10,15 +10,12 @@ public class csCameraPosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*
+		
 		if (csMousePoint.TileSelect) {
 			transform.position = csMousePoint.Tile.transform.position;
-			transform.position -= Vector3.down * 3.0f;
-		} else {
-			
-			transform.position = new Vector3 (0.0f, 10.0f, -0.5f);
-		}
-		*/
+			transform.position -= Vector3.down * 9.0f;
+			transform.position += Vector3.forward * 3.0f;
+		} 
 	}
 
 }

@@ -6,6 +6,8 @@ public class csCameraMove : MonoBehaviour {
 	public Vector2 nowPos, prePos;
 	public Vector3 movePos;
 
+	public Vector2 PreMousePos;
+
 	public static bool bMouseDown;
 
 
@@ -38,37 +40,33 @@ public class csCameraMove : MonoBehaviour {
 			{
 			}
 		}
+
 		/*
 		if( Input.GetMouseButtonDown(0) )
 		{			
-			prePos = new Vector2(0 - frontx, 0 - fronty);
+			prePos = new Vector2(Input.mousePosition.x - PreMousePos.x, Input.mousePosition.y - PreMousePos.y);
 			bMouseDown = true;			
 
 			//Debug.Log ("GetMouseButtonDown");
 		}	
 		else if(Input.GetMouseButtonUp(0) )
 		{		
-			bMouseDown = false;
+			//bMouseDown = false;
 			//Debug.Log ("GetMouseButtonUp");
 		}
 		else if( bMouseDown )
 		{
-			tailx = Input.mousePosition.x;
-			taily = Input.mousePosition.y;
+			bMouseDown = false;
 
-			nowPos = new Vector2(tailx - frontx, taily - fronty);
-			movePos = (Vector3)(prePos - nowPos) * Speed;
+			nowPos = new Vector2(Input.mousePosition.x - PreMousePos.x, Input.mousePosition.y - PreMousePos.y);
+			movePos = (Vector3)(prePos - nowPos) * 10.0f * Speed;
+			transform.Translate(new Vector3(movePos.x, transform.position.y, movePos.y)); 
 
-			transform.Translate(movePos);
-
-			prePos = new Vector2(tailx - frontx, taily - fronty);
-
-			frontx = Input.mousePosition.x;
-			fronty = Input.mousePosition.y;
-
+			prePos = new Vector2(Input.mousePosition.x - PreMousePos.x, Input.mousePosition.y - PreMousePos.y);
+			PreMousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
 		}
-		*/
 
+*/
 
 
 	}

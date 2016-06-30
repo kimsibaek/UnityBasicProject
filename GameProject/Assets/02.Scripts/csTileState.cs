@@ -14,15 +14,17 @@ public class csTileState : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!csMousePoint.Tile){
+		/*
+		if(!csMousePoint.Tile || csMousePoint.touchTile){
 			return;
 		}
 
 		if (csMousePoint.Tile.transform == transform) {
-			//Debug.Log ("select");
+			Debug.Log ("select");
 			transform.GetComponent<Renderer> ().material = Mat;
 		} else {
 			transform.GetComponent<Renderer> ().material = Mat2;
 		}
+		*/
 	}
 }

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 5b0839e773f41504eb1cf066a51dfa89
+timeCreated: 1467253909
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - BtnState: {instanceID: 0}
+  - MatUp: {fileID: 2100000, guid: 21305a8f1991eed44808a9f0b2d0c6bd, type: 2}
+  - MatDown: {fileID: 2100000, guid: 5e3903ee0e320504e8dc4662ed9f5b26, type: 2}
+  - MatLeft: {fileID: 2100000, guid: 7b666b5c351d2a241bcbcf0dc7eb1f52, type: 2}
+  - MatRight: {fileID: 2100000, guid: 37c5e4c80578ec64fa21d822f446b42a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
