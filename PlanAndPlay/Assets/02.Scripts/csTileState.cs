@@ -7,9 +7,12 @@ public class csTileState : MonoBehaviour {
 
 	public bool state;
 
+	public int stateNum;
+
+
 	// Use this for initialization
 	void Start () {
-	
+		stateNum = 0;
 	}
 	
 	// Update is called once per frame
