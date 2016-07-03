@@ -23,25 +23,29 @@ public class csCharacterMove : MonoBehaviour {
 			switch(TS.stateNum){
 			case 0:
 				Debug.Log ("coAnimWalk");
-				coAnimWalk ();
 				StartCoroutine ("coAnimWalk");
 				break;
 			case 1:
-				Debug.Log ("coAnimTurnLeft");
-				coAnimTurnLeft ();
-				//StartCoroutine ("coAnimTurnLeft");
+				Debug.Log ("coAnimTurnUp");
+				StartCoroutine ("coAnimTurnUp");
+				//coAnimTurnUp ();
 				break;
 			case 2:
-				Debug.Log ("coAnimTurnRight");
-				coAnimTurnRight ();
-				//StartCoroutine ("coAnimTurnRight");
+				Debug.Log ("coAnimTurnDown");
+				StartCoroutine ("coAnimTurnDown");
+				//coAnimTurnDown();
 				break;
 			case 3:
-				Debug.Log ("coAnimHalfTurnLeft");
-				coAnimHalfTurnLeft ();
-				//StartCoroutine ("coAnimHalfTurnLeft");
+				Debug.Log ("coAnimTurnLeft");
+				StartCoroutine ("coAnimTurnLeft");
+				//coAnimTurnLeft ();
 				break;
-
+			case 4:
+				Debug.Log ("coAnimTurnRight");
+				StartCoroutine ("coAnimTurnRight");
+				//coAnimTurnRight ();
+				break;
+			
 			}
 
 		} else {
@@ -59,36 +63,32 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	void coAnimWalk(){
-		//GetComponent<Animation>().Play("HumanoidWalk");
-		anim.SetBool ("HumanState", true);
-		//yield return new WaitForSeconds (0.5f);
+		anim.SetBool ("StateWalk", true);
 	}
 
-	void coAnimTurnLeft(){
-		
-		//GetComponent<Animation>().Play("StandQuarterTurnLeft");
-
-		GetComponent<Animation> ().Play ("HumanoidWalk");
-		//anim.SetInteger ("TurnState", 1);
-		//yield return new WaitForSeconds (0.5f);
-		//anim.SetInteger ("TurnState", 0);
+	IEnumerator coAnimTurnUp(){
+		yield return new WaitForSeconds(0.45f);
+		transform.rotation = Quaternion.Euler (0, 0, 0);
+		anim.SetBool ("StateWalk", true);
 	}
 
-	void coAnimTurnRight(){
-		//GetComponent<Animation>().Play("StandQuarterTurnRight");
-
-		GetComponent<Animation> ().Play ("HumanoidWalk");
-		//anim.SetInteger ("TurnState", 2);
-		//yield return new WaitForSeconds (0.5f);
-		//anim.SetInteger ("TurnState", 0);
+	IEnumerator coAnimTurnDown(){
+		yield return new WaitForSeconds(0.45f);
+		transform.rotation = Quaternion.Euler (0, 180.0f, 0);
+		anim.SetBool ("StateWalk", true);
 	}
 
-	void coAnimHalfTurnLeft(){
-		//GetComponent<Animation>().Play("StandHalfTurnLeft");
-
-		GetComponent<Animation> ().Play ("HumanoidWalk");
-		//anim.SetInteger ("TurnState", 3);
-		//yield return new WaitForSeconds (0.5f);
-		//anim.SetInteger ("TurnState", 0);
+	IEnumerator coAnimTurnLeft(){
+		yield return new WaitForSeconds(0.45f);
+		transform.rotation = Quaternion.Euler (0, 270.0f, 0);
+		anim.SetBool ("StateWalk", true);
 	}
+
+	IEnumerator coAnimTurnRight(){
+		yield return new WaitForSeconds(0.45f);
+		transform.rotation = Quaternion.Euler (0, 90.0f, 0);
+		anim.SetBool ("StateWalk", true);
+	}
+
+
 }

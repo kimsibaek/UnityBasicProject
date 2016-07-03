@@ -13,8 +13,8 @@ public class csCameraPosition : MonoBehaviour {
 		
 		if (csMousePoint.TileSelect) {
 			transform.position = csMousePoint.Tile.transform.position;
-			transform.position -= Vector3.down * 9.0f;
-			transform.position += Vector3.forward * 3.0f;
+			transform.position -= Vector3.down * 6.0f;
+			transform.position += Vector3.forward * 2.0f;
 		} 
 	}
 
