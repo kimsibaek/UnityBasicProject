@@ -4,6 +4,8 @@ using System.Collections;
 public class csRaycast : MonoBehaviour {
 	//private float speed = 5.0f;
 	// Use this for initialization
+	public Material Mat;
+
 	void Start () {
 	
 	}
@@ -14,11 +16,17 @@ public class csRaycast : MonoBehaviour {
 		//float hor = Input.GetAxis ("Horizontal");
 		//transform.Translate (Vector3.right * hor * amtMove);
 
-		Debug.DrawRay (transform.position, transform.forward * 2, Color.red);
+		Debug.DrawRay (transform.position, transform.right * 1, Color.red);
 
-		//RaycastHit hit;
-		//if (Physics.Raycast (transform.position, transform.forward, out hit, 8)) {
-		//	Debug.Log (hit.collider.gameObject.name);
-		//}
+		RaycastHit hit;
+		if (Physics.Raycast (transform.position, transform.right, out hit, 1)) {
+			Debug.Log (hit.collider.gameObject.name);
+			//swich on
+			GameObject obj1 = GameObject.Find ("Sight");
+			obj1.SetActive (false);
+			GameObject obj2 = GameObject.Find ("prop_switchUnit_screen");
+			obj2.GetComponent<Renderer> ().material = Mat;
+		}
 	}
+
 }
