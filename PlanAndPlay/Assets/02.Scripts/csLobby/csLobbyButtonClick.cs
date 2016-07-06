@@ -16,4 +16,13 @@ public class csLobbyButtonClick : MonoBehaviour {
 	public void PressStart(){
 		Application.LoadLevel("Chapter");
 	}
+
+	public void Quit () 
+	{
+		#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+		#else
+		Application.Quit();
+		#endif
+	}
 }
