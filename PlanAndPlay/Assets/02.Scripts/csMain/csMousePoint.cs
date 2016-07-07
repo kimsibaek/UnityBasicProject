@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; 
+using UnityEngine.EventSystems;
 
 public class csMousePoint : MonoBehaviour {
 	public static GameObject blankTile;
@@ -38,6 +39,8 @@ public class csMousePoint : MonoBehaviour {
 
 	GameObject obj1;
 	private Text txtStatus1;
+
+
 	// Use this for initialization
 	void Start () {
 		blankTile = transform.gameObject;
@@ -55,19 +58,24 @@ public class csMousePoint : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//UI클릭시 뒤에있는 오브젝트 클릭 막아줌
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(0)) {
+			
+		if (EventSystem.current.IsPointerOverGameObject(0)) {
+			//Debug.Log ("UI click");
 			return;
 		}
-		if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1))
-		{
+		if (EventSystem.current.IsPointerOverGameObject(-1)) {
+			//Debug.Log ("UI click");
 			return;
 		}
+
+
 		if (Input.touchCount == 1) {
+			
 			Touch touch = Input.GetTouch (0);
 			if (touch.phase == TouchPhase.Ended && csCameraMove.bMouseDown && touchTile) {
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				RaycastHit hit;
-				 
+				Debug.Log ("touchTile");
 				if (Physics.Raycast (ray, out hit, Mathf.Infinity, currentMask)) {
 					//Debug.Log (hit.collider.gameObject.name);
 
@@ -111,6 +119,8 @@ public class csMousePoint : MonoBehaviour {
 
 	void cameraPosition(){
 		if (TileSelect) {
+			//Vector3 moveposition = Tile.transform.position - transform.position;
+			//transform.Translate (moveposition * Time.deltaTime);
 			transform.position = Tile.transform.position;
 			transform.position -= Vector3.down * 6.0f;
 			transform.position += Vector3.forward * 2.0f;

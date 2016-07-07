@@ -14,8 +14,13 @@ public class csCharacterMove : MonoBehaviour {
 
 	public static bool GameOver;
 
+	float f_staytime;
+
 	GameObject obj1;
 	Text txtStatus1;
+
+	GameObject Startobj;
+	Text StarttxtStatus;
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
@@ -26,6 +31,9 @@ public class csCharacterMove : MonoBehaviour {
 		b_StartMove = false;
 		obj1 = GameObject.Find ("PlayTimeNumber");
 		txtStatus1 = obj1.GetComponent<Text> ();
+
+		Startobj = GameObject.Find ("StartText");
+		StarttxtStatus = Startobj.GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +44,10 @@ public class csCharacterMove : MonoBehaviour {
 			PlayTimeUpdate ();
 			if(b_StartMove){
 				//Debug.Log ("Move");
-				transform.Translate (Vector3.forward * Time.smoothDeltaTime);
+				if(f_staytime == 0){
+					transform.Translate (Vector3.forward * Time.smoothDeltaTime);
+				}
+
 			}
 		
 		}
@@ -44,6 +55,8 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator coAnimTime(){
+		csMousePoint.touchTile = false;
+		Debug.Log ("coAnimTime");
 		anim.SetBool ("StateWalk", false);
 		yield return new WaitForSeconds(0.45f);
 		b_StartMove = true;
@@ -103,14 +116,31 @@ public class csCharacterMove : MonoBehaviour {
 				StartCoroutine ("coAnimTurnRight");
 				//coAnimTurnRight ();
 				break;
-			
+			case 5:
+				Debug.Log ("coAnimStayOne");
+				StartCoroutine ("coAnimStayOne");
+				//coAnimTurnRight ();
+				break;
+			case 6:
+				Debug.Log ("coAnimStayTwo");
+				StartCoroutine ("coAnimStayTwo");
+				//coAnimTurnRight ();
+				break;
+			case 7:
+				Debug.Log ("coAnimStayThree");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
 			}
 
 		} else {
 			//불가능
 			Debug.Log ("game over");
 			GameOver = true;
-			Application.LoadLevel("Result");
+			anim.SetBool ("StateWalk", false);
+			f_staytime = 1;
+			//Application.LoadLevel("Result");
+
 		}
 	}
 
@@ -139,13 +169,31 @@ public class csCharacterMove : MonoBehaviour {
 				b_PlayTime = false;
 				anim.SetBool ("StateWalk", false);
 				Debug.Log ("일시정지");
+				StarttxtStatus.text = "일시정지";
+				Time.timeScale = 0;
+
 			} else {
 				b_PlayTime = true;
 				anim.SetBool ("StateWalk", true);
 				Debug.Log ("재생");
+
+				StarttxtStatus.text = "재생";
+				Time.timeScale = 1;
 			}
 		}
 
+
+	}
+
+	public void SpeedTime(){
+		if(Time.timeScale == 0){
+			return;
+		}
+		if (Time.timeScale == 1) {
+			Time.timeScale = 2;
+		} else {
+			Time.timeScale = 1;
+		}
 
 	}
 
@@ -177,6 +225,33 @@ public class csCharacterMove : MonoBehaviour {
 		transform.rotation = Quaternion.Euler (0, 90.0f, 0);	
 		//anim.SetBool ("StateWalk", true);
 	}
+	IEnumerator coAnimStayOne(){
+		
+		yield return new WaitForSeconds(0.45f);
+		f_staytime = 1;
+		anim.SetBool ("StateWalk", false);
+		StartCoroutine ("ReStartWalk");
+
+	}
+	IEnumerator coAnimStayTwo(){
+		
+		yield return new WaitForSeconds(0.45f);
+		f_staytime = 2;
+		anim.SetBool ("StateWalk", false);
+		StartCoroutine ("ReStartWalk");
+	}
+	IEnumerator coAnimStayThree(){
+		
+		yield return new WaitForSeconds(0.45f);	
+		f_staytime = 3;
+		anim.SetBool ("StateWalk", false);
+		StartCoroutine ("ReStartWalk");
+	}
 
 
+	IEnumerator ReStartWalk(){
+		yield return new WaitForSeconds(f_staytime);	
+		anim.SetBool ("StateWalk", true);
+		f_staytime = 0;
+	}
 }
