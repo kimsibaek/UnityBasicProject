@@ -85,7 +85,7 @@ public class csMousePoint : MonoBehaviour {
 						if (TileState.GetComponent<csTileState> ().state) {
 							TileSelect = true;
 							Tile = hit.transform.gameObject;
-							Tile.GetComponent<Renderer> ().material = Mat;
+							Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
 							//csTileState TileST = Tile.GetComponent<csTileState> ();
 							//Debug.Log (TileST.stateNum);
 
@@ -105,14 +105,14 @@ public class csMousePoint : MonoBehaviour {
 					if (Tile == blankTile) {
 						return;
 					}
-					Tile.GetComponent<Renderer> ().material = Mat2;
+					Tile.GetComponent<Renderer> ().sharedMaterial = Mat2;
 					Tile = blankTile;
 
 				}
 
 
 			} else {
-				
+				touchTile = true;
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class csMousePoint : MonoBehaviour {
 
 	public void OnMoveImgUp(){
 		
-		Tile.GetComponent<Renderer> ().material = MatUp;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatUp;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 1;
 		BtnState.SetActive(false);
@@ -164,7 +164,7 @@ public class csMousePoint : MonoBehaviour {
 		OrderNumPlus ();
 	}
 	public void OnMoveImgDown(){
-		Tile.GetComponent<Renderer> ().material = MatDown;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatDown;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 2;
 		BtnState.SetActive(false);
@@ -176,7 +176,7 @@ public class csMousePoint : MonoBehaviour {
 		OrderNumPlus ();
 	}
 	public void OnMoveImgLeft(){
-		Tile.GetComponent<Renderer> ().material = MatLeft;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatLeft;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 3;
 		BtnState.SetActive(false);
@@ -188,7 +188,7 @@ public class csMousePoint : MonoBehaviour {
 		OrderNumPlus ();
 	}
 	public void OnMoveImgRight(){
-		Tile.GetComponent<Renderer> ().material = MatRight;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatRight;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 4;
 		BtnState.SetActive(false);
@@ -201,7 +201,7 @@ public class csMousePoint : MonoBehaviour {
 	}
 
 	public void OnMoveImgOneS(){
-		Tile.GetComponent<Renderer> ().material = MatOneS;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatOneS;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 5;
 		BtnState.SetActive(false);
@@ -214,7 +214,7 @@ public class csMousePoint : MonoBehaviour {
 	}
 
 	public void OnMoveImgTwoS(){
-		Tile.GetComponent<Renderer> ().material = MatTwoS;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatTwoS;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 6;
 		BtnState.SetActive(false);
@@ -227,7 +227,7 @@ public class csMousePoint : MonoBehaviour {
 	}
 
 	public void OnMoveImgThreeS(){
-		Tile.GetComponent<Renderer> ().material = MatThreeS;
+		Tile.GetComponent<Renderer> ().sharedMaterial = MatThreeS;
 		csTileState TileST = Tile.GetComponent<csTileState> ();
 		TileST.stateNum = 7;
 		BtnState.SetActive(false);
@@ -246,12 +246,12 @@ public class csMousePoint : MonoBehaviour {
 			OrderNumMinus ();
 		}
 		TileST.stateNum = 0;
-		Tile.GetComponent<Renderer> ().material = Mat2;
+		Tile.GetComponent<Renderer> ().sharedMaterial = Mat2;
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
 		BtnStayState.SetActive(false);
 		BtnMenuState.SetActive (false);
-		touchTile = true;
+		//touchTile = true;
 		TileSelect = false;
 
 

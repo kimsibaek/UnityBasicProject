@@ -19,6 +19,7 @@ public class csButton : MonoBehaviour {
 
 
 	public void btnMenu(){
+		csMousePoint.touchTile = false;
 		BtnState.SetActive (true);
 	}
 

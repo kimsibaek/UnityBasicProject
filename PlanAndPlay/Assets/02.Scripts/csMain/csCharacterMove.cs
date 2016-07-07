@@ -55,7 +55,6 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator coAnimTime(){
-		csMousePoint.touchTile = false;
 		Debug.Log ("coAnimTime");
 		anim.SetBool ("StateWalk", false);
 		yield return new WaitForSeconds(0.45f);
@@ -156,6 +155,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	public void StartAnim(){
+		csMousePoint.touchTile = false;
 		if (StartPlay) {
 			StartPlay = false;
 			gameObject.transform.position -= Vector3.up * 0.1f; 
@@ -186,6 +186,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	public void SpeedTime(){
+		csMousePoint.touchTile = false;
 		if(Time.timeScale == 0){
 			return;
 		}
