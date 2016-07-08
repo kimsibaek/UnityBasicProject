@@ -21,6 +21,8 @@ public class csCharacterMove : MonoBehaviour {
 
 	GameObject Startobj;
 	Text StarttxtStatus;
+
+	bool SpeedGame;
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
@@ -29,6 +31,7 @@ public class csCharacterMove : MonoBehaviour {
 		StartPlay = true;
 		GameOver = false;
 		b_StartMove = false;
+		SpeedGame = false;
 		obj1 = GameObject.Find ("PlayTimeNumber");
 		txtStatus1 = obj1.GetComponent<Text> ();
 
@@ -45,7 +48,7 @@ public class csCharacterMove : MonoBehaviour {
 			if(b_StartMove){
 				//Debug.Log ("Move");
 				if(f_staytime == 0){
-					transform.Translate (Vector3.forward * Time.smoothDeltaTime);
+					transform.Translate (Vector3.forward * anim.speed * Time.smoothDeltaTime);
 				}
 
 			}
@@ -55,11 +58,11 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator coAnimTime(){
-		Debug.Log ("coAnimTime");
+		//Debug.Log ("coAnimTime");
 		anim.SetBool ("StateWalk", false);
 		yield return new WaitForSeconds(0.45f);
 		b_StartMove = true;
-		Debug.Log("coAnimTime");
+		//Debug.Log("coAnimTime");
 		anim.SetBool ("StateWalk", true);
 	}
 
@@ -190,10 +193,16 @@ public class csCharacterMove : MonoBehaviour {
 		if(Time.timeScale == 0){
 			return;
 		}
-		if (Time.timeScale == 1) {
-			Time.timeScale = 2;
+		if (!SpeedGame) {
+			//2배속
+			SpeedGame = true;
+			anim.speed = 2;
+
 		} else {
-			Time.timeScale = 1;
+			//1배속
+			SpeedGame = false;
+			anim.speed = 1;
+
 		}
 
 	}
@@ -204,31 +213,51 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator coAnimTurnUp(){
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		transform.rotation = Quaternion.Euler (0, 0, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnDown(){
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		transform.rotation = Quaternion.Euler (0, 180.0f, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnLeft(){
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		transform.rotation = Quaternion.Euler (0, 270.0f, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnRight(){
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		transform.rotation = Quaternion.Euler (0, 90.0f, 0);	
 		//anim.SetBool ("StateWalk", true);
 	}
 	IEnumerator coAnimStayOne(){
 		
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		f_staytime = 1;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
@@ -236,14 +265,22 @@ public class csCharacterMove : MonoBehaviour {
 	}
 	IEnumerator coAnimStayTwo(){
 		
-		yield return new WaitForSeconds(0.45f);
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		f_staytime = 2;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 	IEnumerator coAnimStayThree(){
 		
-		yield return new WaitForSeconds(0.45f);	
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 		f_staytime = 3;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
@@ -251,7 +288,11 @@ public class csCharacterMove : MonoBehaviour {
 
 
 	IEnumerator ReStartWalk(){
-		yield return new WaitForSeconds(f_staytime);	
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (f_staytime);
+		} else {
+			yield return new WaitForSeconds (f_staytime/2);
+		}	
 		anim.SetBool ("StateWalk", true);
 		f_staytime = 0;
 	}
