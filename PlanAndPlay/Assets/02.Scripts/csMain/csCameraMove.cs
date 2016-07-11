@@ -22,7 +22,7 @@ public class csCameraMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.touchCount == 1 && b_touch) {
-			Debug.Log ("이동");
+			//Debug.Log ("이동");
 			touch = Input.GetTouch (0);
 			if (touch.phase == TouchPhase.Began) {
 				prePos = touch.position - touch.deltaPosition;

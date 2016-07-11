@@ -133,6 +133,46 @@ public class csCharacterMove : MonoBehaviour {
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
+			case 8:
+				Debug.Log ("오브젝트 이동");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 9:
+				Debug.Log ("가속");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 10:
+				Debug.Log ("은신");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 11:
+				Debug.Log ("스카우터");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 12:
+				Debug.Log ("무음기동");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 13:
+				Debug.Log ("더미 설치");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 14:
+				Debug.Log ("EMP");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
+			case 15:
+				Debug.Log ("와이어");
+				StartCoroutine ("coAnimStayThree");
+				//coAnimTurnRight ();
+				break;
 			}
 
 		} else {
@@ -212,6 +252,16 @@ public class csCharacterMove : MonoBehaviour {
 
 	}
 
+	IEnumerator ReStartWalk(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (f_staytime);
+		} else {
+			yield return new WaitForSeconds (f_staytime/2);
+		}	
+		anim.SetBool ("StateWalk", true);
+		f_staytime = 0;
+	}
+
 	IEnumerator coAnimTurnUp(){
 		if (!SpeedGame) {
 			yield return new WaitForSeconds (0.45f);
@@ -286,14 +336,63 @@ public class csCharacterMove : MonoBehaviour {
 		StartCoroutine ("ReStartWalk");
 	}
 
-
-	IEnumerator ReStartWalk(){
+	IEnumerator ActionObjMove(){
 		if (!SpeedGame) {
-			yield return new WaitForSeconds (f_staytime);
+			yield return new WaitForSeconds (0.45f);
 		} else {
-			yield return new WaitForSeconds (f_staytime/2);
-		}	
-		anim.SetBool ("StateWalk", true);
-		f_staytime = 0;
+			yield return new WaitForSeconds (0.225f);
+		}
+		f_staytime = 1;
+		anim.SetBool ("StateWalk", false);
+		StartCoroutine ("ReStartWalk");
+	}
+	IEnumerator ActionSpeed(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActionFad(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActionScout(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActionSound(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActiondummyInstall(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActionEMP(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
+	}
+	IEnumerator ActionWire(){
+		if (!SpeedGame) {
+			yield return new WaitForSeconds (0.45f);
+		} else {
+			yield return new WaitForSeconds (0.225f);
+		}
 	}
 }
