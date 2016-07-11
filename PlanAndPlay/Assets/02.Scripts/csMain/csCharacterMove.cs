@@ -140,7 +140,7 @@ public class csCharacterMove : MonoBehaviour {
 				break;
 			case 9:
 				Debug.Log ("가속");
-				StartCoroutine ("coAnimStayThree");
+				StartCoroutine ("ActionSpeed");
 				//coAnimTurnRight ();
 				break;
 			case 10:
@@ -347,12 +347,22 @@ public class csCharacterMove : MonoBehaviour {
 		StartCoroutine ("ReStartWalk");
 	}
 	IEnumerator ActionSpeed(){
+		
 		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
+			yield return new WaitForSeconds (0.45f/2);
 		} else {
-			yield return new WaitForSeconds (0.225f);
+			yield return new WaitForSeconds (0.225f/2);
 		}
+		StartCoroutine("ActionSpeed2");
 	}
+
+	IEnumerator ActionSpeed2(){
+		SpeedGame = true;
+		//anim.speed *= 2;
+		yield return new WaitForSeconds (3.0f);
+		//anim.speed /= 2;
+	}
+
 	IEnumerator ActionFad(){
 		if (!SpeedGame) {
 			yield return new WaitForSeconds (0.45f);

@@ -9,6 +9,8 @@ public class csTileState : MonoBehaviour {
 
 	public int stateNum;
 
+	public GameObject ActionObj;
+	public GameObject ActionObjPosition;
 
 	// Use this for initialization
 	void Start () {

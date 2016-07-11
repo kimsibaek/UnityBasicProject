@@ -48,6 +48,8 @@ public class csMousePoint : MonoBehaviour {
 	public Material MatActionEMP;
 	public Material MatActionWire;
 
+	GameObject[] SetAction;
+
 	private int OrderNum;
 
 	GameObject obj1;
@@ -87,6 +89,8 @@ public class csMousePoint : MonoBehaviour {
 		ObjectSelect = false;
 		//BtnState = GetComponent<Image> ();
 
+		SetAction = new GameObject[2];
+
 		obj1 = GameObject.Find ("OrderNumber");
 		txtStatus1 = obj1.GetComponent<Text> ();
 
@@ -115,12 +119,34 @@ public class csMousePoint : MonoBehaviour {
 				if (Physics.Raycast (ray, out hit, Mathf.Infinity, currentMask)) {
 					for (int i = 0; i < BlockObjectNum; i++) {
 						if (m_BlockObject [i] == hit.collider.gameObject && hit.collider.gameObject.layer == 8) {
+							for (int j = 0; j < BlockObjectNum; j++){
+								if (m_BlockObject [j].layer == 8) {
+									m_BlockObject [j].GetComponent<Renderer> ().sharedMaterial = Mat2;
+								}
+							}
+
 							Debug.Log ("touchObjectTile");
 
+							//선택한 타일 위치 
+							SetAction[0].GetComponent<Renderer> ().sharedMaterial = MatActionObj;
+							//obj 이동 위치
+							SetAction [0].GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
+
+							TileState.GetComponent<csTileState> ().stateNum = 8;
+
+							Debug.Log (SetAction[1]);
+
+							touchTile = false;
 							Objecting = false;
 							ObjectSelect = false;
-							touchTile = false;
+
+							TouchActionNum = 0;
+							txtStatus2.text = "행동";
+
+							break;
 						}
+
+
 					}
 				}
 			}
@@ -133,8 +159,11 @@ public class csMousePoint : MonoBehaviour {
 					for (int i = 0; i < BlockObjectNum; i++) {
 						if (m_BlockObject [i] == hit.collider.gameObject) {
 							Debug.Log ("touchObject2");
+							//선택한 Obj
+							SetAction [0].GetComponent<csTileState> ().ActionObj = m_BlockObject [i];
 
 							ObjectSelect = true;
+							break;
 						}
 					}
 				}
@@ -168,7 +197,27 @@ public class csMousePoint : MonoBehaviour {
 								}
 								else if (TouchActionNum != 0) {
 									Tile = hit.transform.gameObject;
-									Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+									if(TouchActionNum == 2){
+										//Speed
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSpeed;
+										Tile.GetComponent<csTileState> ().stateNum = 9;
+									}
+									if(TouchActionNum == 3){
+										//Fade
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionFade;
+										Tile.GetComponent<csTileState> ().stateNum = 10;
+									}
+									if(TouchActionNum == 4){
+										//Scout
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionScout;
+										Tile.GetComponent<csTileState> ().stateNum = 11;
+									}
+									if(TouchActionNum == 5){
+										//Sound
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSound;
+										Tile.GetComponent<csTileState> ().stateNum = 12;
+									}
+
 									TouchActionNum = 0;
 									txtStatus2.text = "행동";
 									touchTile = true;
@@ -321,6 +370,7 @@ public class csMousePoint : MonoBehaviour {
 				//오브젝트가 있음
 				Debug.Log ("Object");
 				Objecting = true;
+				SetAction[0] = TileObj;
 				break;
 			}
 			else if(i == BlockObjectNum-1){
