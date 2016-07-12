@@ -14,6 +14,8 @@ public class csCharacterMove : MonoBehaviour {
 
 	public static bool GameOver;
 
+	public GameObject BodyMat;
+
 	float f_staytime;
 
 	GameObject obj1;
@@ -145,7 +147,7 @@ public class csCharacterMove : MonoBehaviour {
 				break;
 			case 10:
 				Debug.Log ("은신");
-				StartCoroutine ("coAnimStayThree");
+				StartCoroutine ("ActionFad");
 				//coAnimTurnRight ();
 				break;
 			case 11:
@@ -233,7 +235,7 @@ public class csCharacterMove : MonoBehaviour {
 		if(Time.timeScale == 0){
 			return;
 		}
-		if (!SpeedGame) {
+		if (anim.speed == 1) {
 			//2배속
 			SpeedGame = true;
 			anim.speed = 2;
@@ -253,156 +255,116 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ReStartWalk(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (f_staytime);
-		} else {
-			yield return new WaitForSeconds (f_staytime/2);
-		}	
+		yield return new WaitForSeconds (f_staytime/anim.speed);
 		anim.SetBool ("StateWalk", true);
 		f_staytime = 0;
 	}
 
 	IEnumerator coAnimTurnUp(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		transform.rotation = Quaternion.Euler (0, 0, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnDown(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		transform.rotation = Quaternion.Euler (0, 180.0f, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnLeft(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		transform.rotation = Quaternion.Euler (0, 270.0f, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnRight(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		transform.rotation = Quaternion.Euler (0, 90.0f, 0);	
 		//anim.SetBool ("StateWalk", true);
 	}
 	IEnumerator coAnimStayOne(){
-		
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		f_staytime = 1;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 
 	}
 	IEnumerator coAnimStayTwo(){
-		
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		f_staytime = 2;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 	IEnumerator coAnimStayThree(){
-		
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		f_staytime = 3;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 
 	IEnumerator ActionObjMove(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		f_staytime = 1;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 	IEnumerator ActionSpeed(){
-		
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f/2);
-		} else {
-			yield return new WaitForSeconds (0.225f/2);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 		StartCoroutine("ActionSpeed2");
 	}
 
 	IEnumerator ActionSpeed2(){
-		SpeedGame = true;
-		//anim.speed *= 2;
-		yield return new WaitForSeconds (3.0f);
-		//anim.speed /= 2;
+		anim.speed *= 2;
+		yield return new WaitForSeconds (3.0f/(anim.speed/2));
+		anim.speed /= 2;
 	}
 
 	IEnumerator ActionFad(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
+		yield return new WaitForSeconds (0.45f/anim.speed);
+		StartCoroutine("ActionFadInOut");
+	}
+
+	IEnumerator ActionFadInOut(){
+		Debug.Log ("은신1");
+		StartCoroutine("ActionFadOut");
+		yield return new WaitForSeconds (2.0f/anim.speed);
+		StartCoroutine("ActionFadIn");
+	}
+
+	IEnumerator ActionFadOut(){
+		Debug.Log ("은신2");
+		for(float i = 1f; i >= 0.3f; i -= 0.05f)
+		{
+			Color color = new Vector4(1,1,1, i);
+			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
+			yield return 0;
 		}
 	}
-	IEnumerator ActionScout(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
+
+	IEnumerator ActionFadIn(){
+		Debug.Log ("은신3");
+		for(float i = 0.3f; i <= 1; i += 0.05f)
+		{
+			Color color = new Vector4(1,1,1, i);
+			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
+			yield return 0;
 		}
+	}
+
+	IEnumerator ActionScout(){
+		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 	IEnumerator ActionSound(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 	IEnumerator ActiondummyInstall(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 	IEnumerator ActionEMP(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 	IEnumerator ActionWire(){
-		if (!SpeedGame) {
-			yield return new WaitForSeconds (0.45f);
-		} else {
-			yield return new WaitForSeconds (0.225f);
-		}
+		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 }
