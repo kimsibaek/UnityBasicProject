@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class csCharacterMove : MonoBehaviour {
 
-	Animator anim;
+	public static Animator anim;
 	public static bool b_PlayTime;
 	public static float PlayTime;
 
@@ -196,7 +196,7 @@ public class csCharacterMove : MonoBehaviour {
 			Debug.Log ("game over");
 			GameOver = true;
 		}
-		Application.LoadLevel("Result");
+		//Application.LoadLevel("Result");
 	}
 
 	public void StartAnim(){
@@ -305,10 +305,15 @@ public class csCharacterMove : MonoBehaviour {
 
 	IEnumerator ActionObjMove(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
-		f_staytime = 1;
-		anim.SetBool ("StateWalk", false);
-		StartCoroutine ("ReStartWalk");
+		StartCoroutine("ActionObjMove2");
 	}
+
+	IEnumerator ActionObjMove2(){
+		anim.SetBool ("StateWalk", false);
+		yield return new WaitForSeconds (1.0f/(anim.speed/2));
+		anim.SetBool ("StateWalk", true);
+	}
+
 	IEnumerator ActionSpeed(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
 		StartCoroutine("ActionSpeed2");
