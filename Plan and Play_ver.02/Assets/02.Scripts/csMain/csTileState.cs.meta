@@ -1,12 +1,22 @@
 fileFormatVersion: 2
 guid: e2bc165f6c5f1b0418e1d112b1edb154
-timeCreated: 1467081251
+timeCreated: 1468456712
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - Mat: {fileID: 2100000, guid: a5f9f2b882f176143b2fa5917f878bb5, type: 2}
-  - Mat2: {fileID: 2100000, guid: 7e85738b0da81454fbaab19927627421, type: 2}
+  - Mat: {instanceID: 0}
+  - Mat2: {instanceID: 0}
+  - ChangeMat1: {fileID: 2100000, guid: e2f644fe90c29c24a996a548dc873613, type: 2}
+  - ChangeMat2: {fileID: 2100000, guid: 84807b1a66dd2fc4caeaf8ef2c7c424b, type: 2}
+  - ChangeMat3: {fileID: 2100000, guid: 5d3c7cc9400b5094c9ee741cd12d0464, type: 2}
+  - ChangeMat4: {fileID: 2100000, guid: d832d749fc978334ab4d1f511def2c53, type: 2}
+  - ChangeMat5: {fileID: 2100000, guid: 024cee7bed9f2ac458ef01037858aacc, type: 2}
+  - ChangeMat6: {fileID: 2100000, guid: 87ddb47b09108d9488b6fd3c644929ec, type: 2}
+  - ChangeMat7: {fileID: 2100000, guid: 988b2b678a3ac294cbd582bb0deaebd2, type: 2}
+  - ChangeMat8: {fileID: 2100000, guid: 9993c687ca5394546a07c792764f0600, type: 2}
+  - ActionObj: {instanceID: 0}
+  - ActionObjPosition: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

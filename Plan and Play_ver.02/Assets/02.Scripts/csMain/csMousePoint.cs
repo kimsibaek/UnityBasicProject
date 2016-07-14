@@ -47,8 +47,12 @@ public class csMousePoint : MonoBehaviour {
 	public Material MatActionDummy;
 	public Material MatActionEMP;
 	public Material MatActionWire;
-
-	GameObject[] SetAction;
+	/// <summary>
+	public Material Matbarrior1;
+	public Material Matbarrior2;
+	public Material Matbarrior3;
+	/// </summary>
+	GameObject SetAction;
 
 	private int OrderNum;
 
@@ -88,8 +92,6 @@ public class csMousePoint : MonoBehaviour {
 
 		ObjectSelect = false;
 		//BtnState = GetComponent<Image> ();
-
-		SetAction = new GameObject[2];
 
 		obj1 = GameObject.Find ("OrderNumber");
 		txtStatus1 = obj1.GetComponent<Text> ();
@@ -140,11 +142,12 @@ public class csMousePoint : MonoBehaviour {
 							Debug.Log ("touchObjectTile");
 
 							//선택한 타일 위치 
-							SetAction[0].GetComponent<Renderer> ().sharedMaterial = MatActionObj;
+							SetAction.GetComponent<Renderer> ().sharedMaterial = MatActionObj;
+							Debug.Log (SetAction);
 							//obj 이동 위치
-							SetAction [0].GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
-
-							TileState.GetComponent<csTileState> ().stateNum = 8;
+							SetAction.GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
+							Debug.Log (SetAction.GetComponent<csTileState> ().ActionObjPosition);
+							SetAction.GetComponent<csTileState> ().stateNum = 8;
 
 							break;
 						}
@@ -158,12 +161,22 @@ public class csMousePoint : MonoBehaviour {
 				RaycastHit hit;
 				if (Physics.Raycast (ray, out hit, Mathf.Infinity, ObjectMask)) {
 					for (int i = 0; i < BlockObjectNum; i++) {
+						
 						if (m_BlockObject [i] == hit.collider.gameObject) {
 							Debug.Log ("touchObject2");
 							//선택한 Obj
-							SetAction [0].GetComponent<csTileState> ().ActionObj = m_BlockObject [i];
-
+							SetAction.GetComponent<csTileState> ().ActionObj = m_BlockObject [i];
+							Debug.Log (SetAction.GetComponent<csTileState> ().ActionObj);
 							ObjectSelect = true;
+
+							Material[] matChange = new Material[2];
+							for(int k = 0; k < BlockObjectNum; k++){
+								if (m_BlockObject [k].layer == 9){
+									matChange [0] = Matbarrior1;
+									matChange [1] = Matbarrior2;
+									m_BlockObject [k].GetComponent<Renderer> ().sharedMaterials = matChange;
+								}
+							}
 						} else {
 							m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat;
 						}
@@ -182,7 +195,7 @@ public class csMousePoint : MonoBehaviour {
 						if (hit.transform.CompareTag("Tile")) {
 							TileState = hit.transform.gameObject;
 							if (TileState.GetComponent<csTileState> ().state) {
-								if(TouchActionNum == 1 || TouchActionNum == 6){
+								if(TouchActionNum == 1 || TouchActionNum == 4 || TouchActionNum == 6){
 									//오브젝트 이동, 더미 설치
 									Tile = hit.transform.gameObject;
 									if(TouchActionNum == 1){
@@ -208,11 +221,6 @@ public class csMousePoint : MonoBehaviour {
 										//Fade
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionFade;
 										Tile.GetComponent<csTileState> ().stateNum = 10;
-									}
-									if(TouchActionNum == 4){
-										//Scout
-										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionScout;
-										Tile.GetComponent<csTileState> ().stateNum = 11;
 									}
 									if(TouchActionNum == 5){
 										//Sound
@@ -366,16 +374,22 @@ public class csMousePoint : MonoBehaviour {
 		} else {
 			
 		}
-
+		bool checkobj = false;
+		Material[] matChange = new Material[2];
 		for(int i=0; i<BlockObjectNum; i++){
 			if (m_BlockObject [i].layer == 9) {
 				//오브젝트가 있음
 				Debug.Log ("Object");
+
 				Objecting = true;
-				SetAction[0] = TileObj;
-				break;
+				SetAction = TileObj;
+				checkobj = true;
+				matChange [0] = Matbarrior3;
+				matChange [1] = Matbarrior2;
+
+				m_BlockObject [i].GetComponent<Renderer> ().sharedMaterials = matChange;
 			}
-			else if(i == BlockObjectNum-1){
+			else if(i == BlockObjectNum-1 && !checkobj){
 				deleteBlockObject(TileObj);
 			}
 		}
@@ -454,8 +468,8 @@ public class csMousePoint : MonoBehaviour {
 		touchTile = false;
 	}
 
-	public void BtnActionScout(){
-		txtStatus2.text = "스카우터";
+	public void BtnActionPositionChange(){
+		txtStatus2.text = "위치 이동";
 		BtnActionState.SetActive (false);
 		TouchActionNum = 4;
 		touchTile = false;

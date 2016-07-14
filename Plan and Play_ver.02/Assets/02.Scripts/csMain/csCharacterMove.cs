@@ -26,6 +26,9 @@ public class csCharacterMove : MonoBehaviour {
 
 	bool SpeedGame;
 	// Use this for initialization
+
+	public Material Mat1;
+	public Material Mat2;
 	void Start () {
 		anim = GetComponent<Animator> ();
 		b_PlayTime = false;
@@ -91,87 +94,87 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		Debug.Log (collision.gameObject.name);
+		//Debug.Log (collision.gameObject.name);
 		csTileState TS = collision.gameObject.GetComponent<csTileState> ();
 		if (TS.state) {
 			//가능
 			switch(TS.stateNum){
 			case 0:
-				Debug.Log ("coAnimWalk");
+				//Debug.Log ("coAnimWalk");
 				//StartCoroutine ("coAnimWalk");
 				break;
 			case 1:
-				Debug.Log ("coAnimTurnUp");
+				//Debug.Log ("coAnimTurnUp");
 				StartCoroutine ("coAnimTurnUp");
 				//coAnimTurnUp ();
 				break;
 			case 2:
-				Debug.Log ("coAnimTurnDown");
+				//Debug.Log ("coAnimTurnDown");
 				StartCoroutine ("coAnimTurnDown");
 				//coAnimTurnDown();
 				break;
 			case 3:
-				Debug.Log ("coAnimTurnLeft");
+				//Debug.Log ("coAnimTurnLeft");
 				StartCoroutine ("coAnimTurnLeft");
 				//coAnimTurnLeft ();
 				break;
 			case 4:
-				Debug.Log ("coAnimTurnRight");
+				//Debug.Log ("coAnimTurnRight");
 				StartCoroutine ("coAnimTurnRight");
 				//coAnimTurnRight ();
 				break;
 			case 5:
-				Debug.Log ("coAnimStayOne");
+				//Debug.Log ("coAnimStayOne");
 				StartCoroutine ("coAnimStayOne");
 				//coAnimTurnRight ();
 				break;
 			case 6:
-				Debug.Log ("coAnimStayTwo");
+				//Debug.Log ("coAnimStayTwo");
 				StartCoroutine ("coAnimStayTwo");
 				//coAnimTurnRight ();
 				break;
 			case 7:
-				Debug.Log ("coAnimStayThree");
+				//Debug.Log ("coAnimStayThree");
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
 			case 8:
-				Debug.Log ("오브젝트 이동");
-				StartCoroutine ("ActionObjMove");
+				//Debug.Log ("오브젝트 이동");
+				StartCoroutine ("coAnimStayOne");
 				//coAnimTurnRight ();
 				break;
 			case 9:
-				Debug.Log ("가속");
+				//Debug.Log ("가속");
 				StartCoroutine ("ActionSpeed");
 				//coAnimTurnRight ();
 				break;
 			case 10:
-				Debug.Log ("은신");
+				//Debug.Log ("은신");
 				StartCoroutine ("ActionFad");
 				//coAnimTurnRight ();
 				break;
 			case 11:
-				Debug.Log ("스카우터");
-				StartCoroutine ("coAnimStayThree");
+				//Debug.Log ("위치이동");
+				StartCoroutine ("ActionPositionChange");
 				//coAnimTurnRight ();
 				break;
 			case 12:
-				Debug.Log ("무음기동");
+				//Debug.Log ("무음기동");
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
 			case 13:
-				Debug.Log ("더미 설치");
+				//Debug.Log ("더미 설치");
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
 			case 14:
-				Debug.Log ("EMP");
+				//Debug.Log ("EMP");
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
 			case 15:
-				Debug.Log ("와이어");
+				//Debug.Log ("와이어");
 				StartCoroutine ("coAnimStayThree");
 				//coAnimTurnRight ();
 				break;
@@ -213,14 +216,14 @@ public class csCharacterMove : MonoBehaviour {
 			if (b_PlayTime) {
 				b_PlayTime = false;
 				anim.SetBool ("StateWalk", false);
-				Debug.Log ("일시정지");
+				//Debug.Log ("일시정지");
 				StarttxtStatus.text = "일시정지";
 				Time.timeScale = 0;
 
 			} else {
 				b_PlayTime = true;
 				anim.SetBool ("StateWalk", true);
-				Debug.Log ("재생");
+				//Debug.Log ("재생");
 
 				StarttxtStatus.text = "재생";
 				Time.timeScale = 1;
@@ -331,33 +334,36 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionFadInOut(){
-		Debug.Log ("은신1");
+		//Debug.Log ("은신1");
 		StartCoroutine("ActionFadOut");
 		yield return new WaitForSeconds (2.0f/anim.speed);
 		StartCoroutine("ActionFadIn");
 	}
 
 	IEnumerator ActionFadOut(){
-		Debug.Log ("은신2");
+		//Debug.Log ("은신2");
+		BodyMat.transform.GetComponent<Renderer> ().sharedMaterial = Mat2;
 		for(float i = 1f; i >= 0.3f; i -= 0.05f)
 		{
 			Color color = new Vector4(1,1,1, i);
+
 			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
 			yield return 0;
 		}
 	}
 
 	IEnumerator ActionFadIn(){
-		Debug.Log ("은신3");
+		//Debug.Log ("은신3");
 		for(float i = 0.3f; i <= 1; i += 0.05f)
 		{
 			Color color = new Vector4(1,1,1, i);
 			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
 			yield return 0;
 		}
+		BodyMat.transform.GetComponent<Renderer> ().sharedMaterial = Mat1;
 	}
 
-	IEnumerator ActionScout(){
+	IEnumerator ActionPositionChange(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
 	}
 	IEnumerator ActionSound(){

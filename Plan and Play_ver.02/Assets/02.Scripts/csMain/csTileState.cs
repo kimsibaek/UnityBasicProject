@@ -35,12 +35,13 @@ public class csTileState : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		Debug.Log ("OnCollisionEnter");
+		//Debug.Log (stateNum);
 		//오브젝트 이동
 		if(stateNum == 8){
+			//Debug.Log ("OnCollisionEnter");
 			Material[] matChange = new Material[2];
-			Debug.Log (ActionObj);
-			Debug.Log (ActionObjPosition);
+			//Debug.Log (ActionObj);
+			//Debug.Log (ActionObjPosition);
 			if (ActionObj.CompareTag ("Object1")) {
 				matChange [0] = ChangeMat2;
 				matChange [1] = ChangeMat4;
@@ -60,18 +61,18 @@ public class csTileState : MonoBehaviour {
 	}
 
 	IEnumerator ActionFad(){
-		Debug.Log ("은신1");
+		//Debug.Log ("은신1");
 		StartCoroutine ("ActionFadOut");
 		yield return new WaitForSeconds (0.5f/csCharacterMove.anim.speed);
 		float x = ActionObj.transform.position.x - ActionObjPosition.transform.position.x;
 		float z = ActionObj.transform.position.z - ActionObjPosition.transform.position.z;
-		ActionObj.transform.position += Vector3.right * x; 
-		ActionObj.transform.position += Vector3.forward * z; 
+		ActionObj.transform.position -= Vector3.right * x; 
+		ActionObj.transform.position -= Vector3.forward * z; 
 		StartCoroutine ("ActionFadIn");
 	}
 
 	IEnumerator ActionFadOut(){
-		Debug.Log ("은신2");
+		//Debug.Log ("은신2");
 		for(float i = 1f; i >= 0.0f; i -= 0.05f)
 		{
 			Color color = new Vector4(1,1,1, i);
@@ -81,7 +82,7 @@ public class csTileState : MonoBehaviour {
 	}
 
 	IEnumerator ActionFadIn(){
-		Debug.Log ("은신3");
+		//Debug.Log ("은신3");
 		for(float i = 0.0f; i <= 1; i += 0.05f)
 		{
 			Color color = new Vector4(1,1,1, i);
