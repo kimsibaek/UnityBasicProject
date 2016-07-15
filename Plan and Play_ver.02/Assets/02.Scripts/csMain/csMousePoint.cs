@@ -148,7 +148,8 @@ public class csMousePoint : MonoBehaviour {
 							SetAction.GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
 							Debug.Log (SetAction.GetComponent<csTileState> ().ActionObjPosition);
 							SetAction.GetComponent<csTileState> ().stateNum = 8;
-
+							OrderNumPlus ();
+							ObjectSelect = false;
 							break;
 						}
 					}
@@ -199,16 +200,18 @@ public class csMousePoint : MonoBehaviour {
 									//오브젝트 이동, 더미 설치
 									Tile = hit.transform.gameObject;
 									if(TouchActionNum == 1){
-										//오브젝트 이동
-										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionObj;
+										b_AddAction = true;
+
+										TileLight (Tile, 1);
+									}else if(TouchActionNum == 4){
+										//위치이동
+										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
 									}else if(TouchActionNum == 6){
 										//더미 설치
 										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
 									}
 
-									b_AddAction = true;
 
-									TileLight (Tile, 1);
 								}
 								else if (TouchActionNum != 0) {
 									Tile = hit.transform.gameObject;
@@ -216,11 +219,13 @@ public class csMousePoint : MonoBehaviour {
 										//Speed
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSpeed;
 										Tile.GetComponent<csTileState> ().stateNum = 9;
+										OrderNumPlus ();
 									}
 									if(TouchActionNum == 3){
 										//Fade
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionFade;
 										Tile.GetComponent<csTileState> ().stateNum = 10;
+										OrderNumPlus ();
 									}
 									if(TouchActionNum == 5){
 										//Sound
@@ -301,7 +306,7 @@ public class csMousePoint : MonoBehaviour {
 					m_BlockObject [BlockObjectNum] = TileState;
 					BlockObjectNum++;
 				} else {
-					if (TileState.GetComponent<csTileState> ().state) {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
 						//오브젝트 이동, 더미 설치
 						Tile = hit.transform.gameObject;
 						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
@@ -321,7 +326,7 @@ public class csMousePoint : MonoBehaviour {
 					m_BlockObject [BlockObjectNum] = TileState;
 					BlockObjectNum++;
 				} else {
-					if (TileState.GetComponent<csTileState> ().state) {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
 						//오브젝트 이동, 더미 설치
 						Tile = hit.transform.gameObject;
 						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
@@ -341,7 +346,7 @@ public class csMousePoint : MonoBehaviour {
 					m_BlockObject [BlockObjectNum] = TileState;
 					BlockObjectNum++;
 				} else {
-					if (TileState.GetComponent<csTileState> ().state) {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
 						//오브젝트 이동, 더미 설치
 						Tile = hit.transform.gameObject;
 						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
@@ -360,7 +365,7 @@ public class csMousePoint : MonoBehaviour {
 					m_BlockObject [BlockObjectNum] = TileState;
 					BlockObjectNum++;
 				} else {
-					if (TileState.GetComponent<csTileState> ().state) {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
 						//오브젝트 이동, 더미 설치
 						Tile = hit.transform.gameObject;
 						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
@@ -369,30 +374,134 @@ public class csMousePoint : MonoBehaviour {
 					}
 				}
 			}
-		} else if (Num == 2) {
 
+			bool checkobj = false;
+			Material[] matChange = new Material[2];
+			for(int i=0; i<BlockObjectNum; i++){
+				if (m_BlockObject [i].layer == 9) {
+					//오브젝트가 있음
+					Debug.Log ("Object");
+
+					Objecting = true;
+					SetAction = TileObj;
+					checkobj = true;
+					matChange [0] = Matbarrior3;
+					matChange [1] = Matbarrior2;
+
+					m_BlockObject [i].GetComponent<Renderer> ().sharedMaterials = matChange;
+				}
+				else if(i == BlockObjectNum-1 && !checkobj){
+					deleteBlockObject(TileObj);
+				}
+			}
+		} else if (Num == 2) {
+			m_BlockObject = new GameObject[4];
+
+			RaycastHit hit;
+			vec3 = TileObj.transform.position;
+			vec3.x = xp2;
+			vec3.y += 5.0f;
+			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
+				Debug.Log (hit.collider.gameObject.name);
+				TileState = hit.transform.gameObject;
+
+				if (hit.transform.gameObject.layer == 9) {
+					//오브젝트
+					m_BlockObject [BlockObjectNum] = TileState;
+					BlockObjectNum++;
+				} else {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
+						//오브젝트 이동, 더미 설치
+						Tile = hit.transform.gameObject;
+						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+						m_BlockObject [BlockObjectNum] = TileState;
+						BlockObjectNum++;
+					}
+				}
+
+			}
+
+			vec3.x = xm2;
+			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
+				Debug.Log (hit.collider.gameObject.name);
+				TileState = hit.transform.gameObject;
+				if (hit.transform.gameObject.layer == 9) {
+					//오브젝트
+					m_BlockObject [BlockObjectNum] = TileState;
+					BlockObjectNum++;
+				} else {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
+						//오브젝트 이동, 더미 설치
+						Tile = hit.transform.gameObject;
+						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+						m_BlockObject [BlockObjectNum] = TileState;
+						BlockObjectNum++;
+					}
+				}
+			}
+
+			vec3.x = TileObj.transform.position.x;
+			vec3.z = zp2;
+			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
+				Debug.Log (hit.collider.gameObject.name);
+				TileState = hit.transform.gameObject;
+				if (hit.transform.gameObject.layer == 9) {
+					//오브젝트
+					m_BlockObject [BlockObjectNum] = TileState;
+					BlockObjectNum++;
+				} else {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
+						//오브젝트 이동, 더미 설치
+						Tile = hit.transform.gameObject;
+						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+						m_BlockObject [BlockObjectNum] = TileState;
+						BlockObjectNum++;
+					}
+				}
+			}
+
+			vec3.z = zm2;
+			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
+				Debug.Log (hit.collider.gameObject.name);
+				TileState = hit.transform.gameObject;
+				if (hit.transform.gameObject.layer == 9) {
+					//오브젝트
+					m_BlockObject [BlockObjectNum] = TileState;
+					BlockObjectNum++;
+				} else {
+					if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
+						//오브젝트 이동, 더미 설치
+						Tile = hit.transform.gameObject;
+						//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+						m_BlockObject [BlockObjectNum] = TileState;
+						BlockObjectNum++;
+					}
+				}
+			}
+
+			bool checkobj = false;
+			Material[] matChange = new Material[2];
+			for(int i=0; i<BlockObjectNum; i++){
+				if (m_BlockObject [i].layer == 9) {
+					//오브젝트가 있음
+					Debug.Log ("Object");
+
+					Objecting = true;
+					SetAction = TileObj;
+					checkobj = true;
+					matChange [0] = Matbarrior3;
+					matChange [1] = Matbarrior2;
+
+					m_BlockObject [i].GetComponent<Renderer> ().sharedMaterials = matChange;
+				}
+				else if(i == BlockObjectNum-1 && !checkobj){
+					deleteBlockObject(TileObj);
+				}
+			}
 		} else {
 			
 		}
-		bool checkobj = false;
-		Material[] matChange = new Material[2];
-		for(int i=0; i<BlockObjectNum; i++){
-			if (m_BlockObject [i].layer == 9) {
-				//오브젝트가 있음
-				Debug.Log ("Object");
 
-				Objecting = true;
-				SetAction = TileObj;
-				checkobj = true;
-				matChange [0] = Matbarrior3;
-				matChange [1] = Matbarrior2;
-
-				m_BlockObject [i].GetComponent<Renderer> ().sharedMaterials = matChange;
-			}
-			else if(i == BlockObjectNum-1 && !checkobj){
-				deleteBlockObject(TileObj);
-			}
-		}
 	}
 
 	void deleteBlockObject(GameObject TileObject){
@@ -414,10 +523,24 @@ public class csMousePoint : MonoBehaviour {
 		if (TileSelect) {
 			//Vector3 moveposition = Tile.transform.position - transform.position;
 			//transform.Translate (moveposition * Time.deltaTime);
+			//Vector3 CameraPosition;
+			//CameraPosition = Tile.transform.position;
+			//CameraPosition += Vector3.up * 6.0f;
+			//CameraPosition += Vector3.forward * 2.0f;
 			transform.position = Tile.transform.position;
 			transform.position -= Vector3.down * 6.0f;
 			transform.position += Vector3.forward * 2.0f;
-		} 
+		}
+
+	}
+
+	IEnumerator ActionFadOut(){
+		//Debug.Log ("은신2");
+		for(float i = 1f; i >= 0.0f; i -= 0.05f)
+		{
+			
+			yield return 0;
+		}
 	}
 
 	public void OnMoveImg(){

@@ -29,6 +29,8 @@ public class csCharacterMove : MonoBehaviour {
 
 	public Material Mat1;
 	public Material Mat2;
+
+	public bool CharacterNoSound;
 	void Start () {
 		anim = GetComponent<Animator> ();
 		b_PlayTime = false;
@@ -37,6 +39,7 @@ public class csCharacterMove : MonoBehaviour {
 		GameOver = false;
 		b_StartMove = false;
 		SpeedGame = false;
+		CharacterNoSound = false;
 		obj1 = GameObject.Find ("PlayTimeNumber");
 		txtStatus1 = obj1.GetComponent<Text> ();
 
@@ -94,7 +97,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		//Debug.Log (collision.gameObject.name);
+		Debug.Log (collision.gameObject.name);
 		csTileState TS = collision.gameObject.GetComponent<csTileState> ();
 		if (TS.state) {
 			//가능
@@ -195,7 +198,13 @@ public class csCharacterMove : MonoBehaviour {
 		if (other.gameObject.CompareTag("Sucess")) {
 			Debug.Log ("game Sucess");
 			GameOver = false;
-		} else {
+		}
+		else if(other.gameObject.CompareTag("NoSound")){
+			if(!CharacterNoSound){
+				Debug.Log ("game over");
+				GameOver = true;
+			}
+		}else {
 			Debug.Log ("game over");
 			GameOver = true;
 		}

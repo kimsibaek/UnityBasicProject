@@ -40,8 +40,8 @@ public class csTileState : MonoBehaviour {
 		if(stateNum == 8){
 			//Debug.Log ("OnCollisionEnter");
 			Material[] matChange = new Material[2];
-			//Debug.Log (ActionObj);
-			//Debug.Log (ActionObjPosition);
+			Debug.Log (ActionObj);
+			Debug.Log (ActionObjPosition);
 			if (ActionObj.CompareTag ("Object1")) {
 				matChange [0] = ChangeMat2;
 				matChange [1] = ChangeMat4;
@@ -66,8 +66,14 @@ public class csTileState : MonoBehaviour {
 		yield return new WaitForSeconds (0.5f/csCharacterMove.anim.speed);
 		float x = ActionObj.transform.position.x - ActionObjPosition.transform.position.x;
 		float z = ActionObj.transform.position.z - ActionObjPosition.transform.position.z;
-		ActionObj.transform.position -= Vector3.right * x; 
-		ActionObj.transform.position -= Vector3.forward * z; 
+		Debug.Log (x + " " + z);
+		Debug.Log (ActionObj.transform.position);
+		Vector3 vec;
+		vec = ActionObj.transform.position;
+		vec.x -= x;
+		vec.z -= z;
+		ActionObj.transform.localPosition = vec;
+		Debug.Log (ActionObj.transform.localPosition);
 		StartCoroutine ("ActionFadIn");
 	}
 
