@@ -3,15 +3,21 @@ using System.Collections;
 
 public class iTweenPathTest : MonoBehaviour {
 
+	public bool check;
+
 	// Use this for initialization
 	void Start () {
-		
+		check = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-
+		if (check) {
+			iTween.Resume ();
+		} else {
+			iTween.Pause ();
+		}
 
 
 	}

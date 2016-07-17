@@ -31,6 +31,9 @@ public class csCharacterMove : MonoBehaviour {
 	public Material Mat2;
 
 	public bool CharacterNoSound;
+
+	public GameObject Dummy;
+
 	void Start () {
 		anim = GetComponent<Animator> ();
 		b_PlayTime = false;
@@ -97,7 +100,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
-		Debug.Log (collision.gameObject.name);
+		//Debug.Log (collision.gameObject.name);
 		csTileState TS = collision.gameObject.GetComponent<csTileState> ();
 		if (TS.state) {
 			//가능
@@ -163,12 +166,15 @@ public class csCharacterMove : MonoBehaviour {
 				break;
 			case 12:
 				//Debug.Log ("무음기동");
-				StartCoroutine ("coAnimStayThree");
+				StartCoroutine ("ActionSound");
 				//coAnimTurnRight ();
 				break;
 			case 13:
-				//Debug.Log ("더미 설치");
-				StartCoroutine ("coAnimStayThree");
+				Debug.Log ("더미 설치");
+				StartCoroutine ("ActiondummyInstall");
+				Dummy = Instantiate (Resources.Load ("0.0")) as GameObject;
+				Dummy.transform.position = collision.gameObject.GetComponent<csTileState>().ActionObjPosition.transform.position;
+				Dummy.transform.position += Vector3.up * 0.1f;
 				//coAnimTurnRight ();
 				break;
 			case 14:
@@ -322,7 +328,7 @@ public class csCharacterMove : MonoBehaviour {
 
 	IEnumerator ActionObjMove2(){
 		anim.SetBool ("StateWalk", false);
-		yield return new WaitForSeconds (1.0f/(anim.speed/2));
+		yield return new WaitForSeconds (1.0f/anim.speed);
 		anim.SetBool ("StateWalk", true);
 	}
 
@@ -339,17 +345,17 @@ public class csCharacterMove : MonoBehaviour {
 
 	IEnumerator ActionFad(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
-		StartCoroutine("ActionFadInOut");
+		StartCoroutine("ActionFadeInOut");
 	}
 
-	IEnumerator ActionFadInOut(){
+	IEnumerator ActionFadeInOut(){
 		//Debug.Log ("은신1");
-		StartCoroutine("ActionFadOut");
+		StartCoroutine("ActionFadeOut");
 		yield return new WaitForSeconds (2.0f/anim.speed);
-		StartCoroutine("ActionFadIn");
+		StartCoroutine("ActionFadeIn");
 	}
 
-	IEnumerator ActionFadOut(){
+	IEnumerator ActionFadeOut(){
 		//Debug.Log ("은신2");
 		BodyMat.transform.GetComponent<Renderer> ().sharedMaterial = Mat2;
 		for(float i = 1f; i >= 0.3f; i -= 0.05f)
@@ -361,7 +367,7 @@ public class csCharacterMove : MonoBehaviour {
 		}
 	}
 
-	IEnumerator ActionFadIn(){
+	IEnumerator ActionFadeIn(){
 		//Debug.Log ("은신3");
 		for(float i = 0.3f; i <= 1; i += 0.05f)
 		{
@@ -374,13 +380,76 @@ public class csCharacterMove : MonoBehaviour {
 
 	IEnumerator ActionPositionChange(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
+		anim.SetBool ("StateWalk", false);
+		f_staytime = 1;
+		StartCoroutine("ActionPositionChangeFadeOutIn");
 	}
+	IEnumerator ActionPositionChangeFadeOutIn(){
+		//
+		StartCoroutine("ActionPositionChangeFadeOut");
+		yield return new WaitForSeconds (0.5f/anim.speed);
+		transform.position += Vector3.forward * 2.0f;
+
+		StartCoroutine("ActionPositionChangeFadeIn");
+	}
+
+	IEnumerator ActionPositionChangeFadeOut(){
+		BodyMat.transform.GetComponent<Renderer> ().sharedMaterial = Mat2;
+		for(float i = 1f; i >= 0.3f; i -= 0.05f)
+		{
+			Color color = new Vector4(1,1,1, i);
+
+			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
+			yield return 0;
+		}
+	}
+
+	IEnumerator ActionPositionChangeFadeIn(){
+		for(float i = 0.3f; i <= 1; i += 0.05f)
+		{
+			Color color = new Vector4(1,1,1, i);
+			BodyMat.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
+			yield return 0;
+		}
+		BodyMat.transform.GetComponent<Renderer> ().sharedMaterial = Mat1;
+		anim.SetBool ("StateWalk", true);
+		f_staytime = 0;
+	}
+
 	IEnumerator ActionSound(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
+		StartCoroutine("ActionSoundOnOff");
 	}
+
+	IEnumerator ActionSoundOnOff(){
+		CharacterNoSound = true;
+		yield return new WaitForSeconds (4.0f/anim.speed);
+		CharacterNoSound = false;
+	}
+
 	IEnumerator ActiondummyInstall(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
+		anim.SetBool ("StateWalk", false);
+		f_staytime = 1;
+		StartCoroutine("ActiondummyInstall2");
 	}
+	IEnumerator ActiondummyInstall2(){
+		StartCoroutine("ActiondummyInstallIn");
+		yield return new WaitForSeconds (1.0f/anim.speed);
+		anim.SetBool ("StateWalk", true);
+		f_staytime = 0;
+	}
+
+	IEnumerator ActiondummyInstallIn(){
+		for(float i = 0.0f; i <= 1; i += 0.05f)
+		{
+			Color color = new Vector4(1,1,1, i);
+			Dummy.transform.GetComponent<Renderer> ().sharedMaterial.color = color;
+			yield return 0;
+		}
+		Destroy (Dummy, 4.0f);
+	}
+
 	IEnumerator ActionEMP(){
 		yield return new WaitForSeconds (0.45f/anim.speed);
 	}

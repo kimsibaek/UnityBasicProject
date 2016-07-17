@@ -42,7 +42,7 @@ public class csMousePoint : MonoBehaviour {
 	public Material MatActionObj;
 	public Material MatActionSpeed;
 	public Material MatActionFade;
-	public Material MatActionScout;
+	public Material MatActionPositionChange;
 	public Material MatActionSound;
 	public Material MatActionDummy;
 	public Material MatActionEMP;
@@ -139,14 +139,14 @@ public class csMousePoint : MonoBehaviour {
 								}
 							}
 
-							Debug.Log ("touchObjectTile");
+							//Debug.Log ("touchObjectTile");
 
 							//선택한 타일 위치 
 							SetAction.GetComponent<Renderer> ().sharedMaterial = MatActionObj;
-							Debug.Log (SetAction);
+							//Debug.Log (SetAction);
 							//obj 이동 위치
 							SetAction.GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
-							Debug.Log (SetAction.GetComponent<csTileState> ().ActionObjPosition);
+							//Debug.Log (SetAction.GetComponent<csTileState> ().ActionObjPosition);
 							SetAction.GetComponent<csTileState> ().stateNum = 8;
 							OrderNumPlus ();
 							ObjectSelect = false;
@@ -157,39 +157,66 @@ public class csMousePoint : MonoBehaviour {
 			}
 
 			else if (Objecting) {
-				touchTile = false;
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit, Mathf.Infinity, ObjectMask)) {
-					for (int i = 0; i < BlockObjectNum; i++) {
-						
-						if (m_BlockObject [i] == hit.collider.gameObject) {
-							Debug.Log ("touchObject2");
-							//선택한 Obj
-							SetAction.GetComponent<csTileState> ().ActionObj = m_BlockObject [i];
-							Debug.Log (SetAction.GetComponent<csTileState> ().ActionObj);
-							ObjectSelect = true;
+				if(TouchActionNum == 1){
+					touchTile = false;
+					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+					RaycastHit hit;
+					if (Physics.Raycast (ray, out hit, Mathf.Infinity, ObjectMask)) {
+						for (int i = 0; i < BlockObjectNum; i++) {
 
-							Material[] matChange = new Material[2];
-							for(int k = 0; k < BlockObjectNum; k++){
-								if (m_BlockObject [k].layer == 9){
-									matChange [0] = Matbarrior1;
-									matChange [1] = Matbarrior2;
-									m_BlockObject [k].GetComponent<Renderer> ().sharedMaterials = matChange;
+							if (m_BlockObject [i] == hit.collider.gameObject) {
+								//Debug.Log ("touchObject2");
+								//선택한 Obj
+								SetAction.GetComponent<csTileState> ().ActionObj = m_BlockObject [i];
+								//Debug.Log (SetAction.GetComponent<csTileState> ().ActionObj);
+								ObjectSelect = true;
+
+								Material[] matChange = new Material[2];
+								for(int k = 0; k < BlockObjectNum; k++){
+									if (m_BlockObject [k].layer == 9){
+										matChange [0] = Matbarrior1;
+										matChange [1] = Matbarrior2;
+										m_BlockObject [k].GetComponent<Renderer> ().sharedMaterials = matChange;
+									}
 								}
+							} else {
+								m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat;
 							}
-						} else {
-							m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat;
 						}
 					}
 				}
+				else if(TouchActionNum == 6){
+					touchTile = false;
+					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+					RaycastHit hit;
+					if (Physics.Raycast (ray, out hit, Mathf.Infinity, currentMask)) {
+						for (int i = 0; i < BlockObjectNum; i++) {
+							if (m_BlockObject [i] == hit.collider.gameObject) {
+								TouchActionNum = 0;
+								txtStatus2.text = "행동";
+								//선택한 타일 위치 
+								SetAction.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
+								Debug.Log (SetAction);
+								//dummy 위치
+								SetAction.GetComponent<csTileState> ().ActionObjPosition = m_BlockObject [i];
+								Debug.Log (SetAction.GetComponent<csTileState> ().ActionObjPosition);
+								SetAction.GetComponent<csTileState> ().stateNum = 13;
+								OrderNumPlus ();
 
+							} 
+							m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat2;
+
+							StartCoroutine ("DelayTouch");
+						}
+
+					}
+				}
 			} else {
 				Touch touch = Input.GetTouch (0);
 				if (touch.phase == TouchPhase.Ended && csCameraMove.bMouseDown && touchTile) {
 					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 					RaycastHit hit;
-					Debug.Log ("touchTile");
+					//Debug.Log ("touchTile");
 					if (Physics.Raycast (ray, out hit, Mathf.Infinity, currentMask)) {
 						//Debug.Log (hit.collider.gameObject.name);
 
@@ -200,15 +227,15 @@ public class csMousePoint : MonoBehaviour {
 									//오브젝트 이동, 더미 설치
 									Tile = hit.transform.gameObject;
 									if(TouchActionNum == 1){
-										b_AddAction = true;
-
 										TileLight (Tile, 1);
 									}else if(TouchActionNum == 4){
 										//위치이동
-										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionPositionChange;
+										Tile.GetComponent<csTileState> ().stateNum = 11;
 									}else if(TouchActionNum == 6){
 										//더미 설치
 										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
+										TileLight (Tile);
 									}
 
 
@@ -275,6 +302,43 @@ public class csMousePoint : MonoBehaviour {
 		}
 	}
 
+	void TileLight(GameObject TileObj){
+		deleteBlockObject (TileObj);
+		m_BlockObject = new GameObject[60];
+		//BlockObjectNum = 0;
+		for(int i=-5; i<=5; i++){
+			for(int k=-5; k<=5; k++){
+				int I_abs = Mathf.Abs (i) + Mathf.Abs (k);
+				if(I_abs < 6 && I_abs != 0){
+					RaycastHit hit;
+					Vector3 vec3 = TileObj.transform.position;
+					vec3.x += i;
+					vec3.y += 5.0f;
+					vec3.z += k;
+					if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, currentMask)) {
+						//Debug.Log (hit.collider.gameObject.name);
+						TileState = hit.transform.gameObject;
+
+						if (TileState.GetComponent<csTileState> ().state && TileState.GetComponent<csTileState> ().stateNum == 0) {
+							//오브젝트 이동, 더미 설치
+							//Tile = hit.transform.gameObject;
+							//Tile.GetComponent<Renderer> ().sharedMaterial = Mat;
+							m_BlockObject [BlockObjectNum] = TileState;
+							BlockObjectNum++;
+						}
+					}
+				}
+			}
+		}
+		SetAction = TileObj;
+		for(int i=0; i<BlockObjectNum; i++){
+			
+			Objecting = true;
+			m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat;
+
+		}
+	}
+
 	void TileLight(GameObject TileObj, int Num){
 
 		deleteBlockObject (TileObj);
@@ -298,7 +362,7 @@ public class csMousePoint : MonoBehaviour {
 			vec3.x = xp1;
 			vec3.y += 5.0f;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 
 				if (hit.transform.gameObject.layer == 9) {
@@ -319,7 +383,7 @@ public class csMousePoint : MonoBehaviour {
 
 			vec3.x = xm1;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -339,7 +403,7 @@ public class csMousePoint : MonoBehaviour {
 			vec3.x = TileObj.transform.position.x;
 			vec3.z = zp1;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -358,7 +422,7 @@ public class csMousePoint : MonoBehaviour {
 
 			vec3.z = zm1;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -380,7 +444,7 @@ public class csMousePoint : MonoBehaviour {
 			for(int i=0; i<BlockObjectNum; i++){
 				if (m_BlockObject [i].layer == 9) {
 					//오브젝트가 있음
-					Debug.Log ("Object");
+					//Debug.Log ("Object");
 
 					Objecting = true;
 					SetAction = TileObj;
@@ -402,7 +466,7 @@ public class csMousePoint : MonoBehaviour {
 			vec3.x = xp2;
 			vec3.y += 5.0f;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 
 				if (hit.transform.gameObject.layer == 9) {
@@ -423,7 +487,7 @@ public class csMousePoint : MonoBehaviour {
 
 			vec3.x = xm2;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -443,7 +507,7 @@ public class csMousePoint : MonoBehaviour {
 			vec3.x = TileObj.transform.position.x;
 			vec3.z = zp2;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -462,7 +526,7 @@ public class csMousePoint : MonoBehaviour {
 
 			vec3.z = zm2;
 			if (Physics.Raycast (vec3, TileObj.transform.up * -1.0f, out hit, 5, AddLayerMask)) {
-				Debug.Log (hit.collider.gameObject.name);
+				//Debug.Log (hit.collider.gameObject.name);
 				TileState = hit.transform.gameObject;
 				if (hit.transform.gameObject.layer == 9) {
 					//오브젝트
@@ -484,7 +548,7 @@ public class csMousePoint : MonoBehaviour {
 			for(int i=0; i<BlockObjectNum; i++){
 				if (m_BlockObject [i].layer == 9) {
 					//오브젝트가 있음
-					Debug.Log ("Object");
+					//Debug.Log ("Object");
 
 					Objecting = true;
 					SetAction = TileObj;
@@ -509,7 +573,7 @@ public class csMousePoint : MonoBehaviour {
 			for(int i=0; i<BlockObjectNum; i++){
 				if (m_BlockObject [i].layer == 8) {
 					//Tile 있음
-					Debug.Log ("Tile mat delete");
+					//Debug.Log ("Tile mat delete");
 					m_BlockObject [i].GetComponent<Renderer> ().sharedMaterial = Mat2;
 				}
 			}
