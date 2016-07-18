@@ -15,8 +15,8 @@ public class csTileState : MonoBehaviour {
 	public Material ChangeMat7;
 	public Material ChangeMat8;
 	/// </summary>
-
-
+	public bool SwitchButton;
+	public bool SwitchButtonDelay;
 	public bool state;
 
 	public int stateNum;
@@ -63,7 +63,7 @@ public class csTileState : MonoBehaviour {
 	IEnumerator ActionFad(){
 		//Debug.Log ("은신1");
 		StartCoroutine ("ActionFadOut");
-		yield return new WaitForSeconds (0.5f/csCharacterMove.anim.speed);
+		yield return new WaitForSeconds (0.55f/csCharacterMove.anim.speed);
 		float x = ActionObj.transform.position.x - ActionObjPosition.transform.position.x;
 		float z = ActionObj.transform.position.z - ActionObjPosition.transform.position.z;
 		Debug.Log (x + " " + z);

@@ -102,7 +102,7 @@ public class csMousePoint : MonoBehaviour {
 		
 
 	IEnumerator DelayTouch(){
-		yield return new WaitForSeconds(0.45f);
+		yield return new WaitForSeconds(0.55f);
 		touchTile = false;
 		Objecting = false;
 		ObjectSelect = false;
@@ -121,7 +121,6 @@ public class csMousePoint : MonoBehaviour {
 		}
 
 		if (Input.touchCount == 1) {
-			
 			if(ObjectSelect){
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				RaycastHit hit;
@@ -223,15 +222,11 @@ public class csMousePoint : MonoBehaviour {
 						if (hit.transform.CompareTag("Tile")) {
 							TileState = hit.transform.gameObject;
 							if (TileState.GetComponent<csTileState> ().state) {
-								if(TouchActionNum == 1 || TouchActionNum == 4 || TouchActionNum == 6){
+								if(TouchActionNum == 1 || TouchActionNum == 6){
 									//오브젝트 이동, 더미 설치
 									Tile = hit.transform.gameObject;
 									if(TouchActionNum == 1){
 										TileLight (Tile, 1);
-									}else if(TouchActionNum == 4){
-										//위치이동
-										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionPositionChange;
-										Tile.GetComponent<csTileState> ().stateNum = 11;
 									}else if(TouchActionNum == 6){
 										//더미 설치
 										//Tile.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
@@ -254,10 +249,17 @@ public class csMousePoint : MonoBehaviour {
 										Tile.GetComponent<csTileState> ().stateNum = 10;
 										OrderNumPlus ();
 									}
+									if(TouchActionNum == 4){
+										//위치이동
+										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionPositionChange;
+										Tile.GetComponent<csTileState> ().stateNum = 11;
+										OrderNumPlus ();
+									}
 									if(TouchActionNum == 5){
 										//Sound
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSound;
 										Tile.GetComponent<csTileState> ().stateNum = 12;
+										OrderNumPlus ();
 									}
 
 									TouchActionNum = 0;
