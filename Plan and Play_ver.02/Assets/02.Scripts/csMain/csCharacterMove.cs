@@ -16,7 +16,7 @@ public class csCharacterMove : MonoBehaviour {
 
 	public GameObject BodyMat;
 
-	float f_staytime;
+	public static float f_staytime;
 
 	GameObject obj1;
 	Text txtStatus1;
@@ -33,6 +33,8 @@ public class csCharacterMove : MonoBehaviour {
 	public bool CharacterNoSound;
 
 	public GameObject Dummy;
+
+	csTileState TS;
 
 	void Start () {
 		anim = GetComponent<Animator> ();
@@ -71,7 +73,7 @@ public class csCharacterMove : MonoBehaviour {
 	IEnumerator coAnimTime(){
 		//Debug.Log ("coAnimTime");
 		anim.SetBool ("StateWalk", false);
-		yield return new WaitForSeconds(0.45f);
+		yield return new WaitForSeconds(0.55f);
 		b_StartMove = true;
 		//Debug.Log("coAnimTime");
 		anim.SetBool ("StateWalk", true);
@@ -101,7 +103,8 @@ public class csCharacterMove : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision){
 		//Debug.Log (collision.gameObject.name);
-		csTileState TS = collision.gameObject.GetComponent<csTileState> ();
+		TS = collision.gameObject.GetComponent<csTileState> ();
+
 		if (TS.state) {
 			//가능
 			switch(TS.stateNum){
@@ -110,23 +113,31 @@ public class csCharacterMove : MonoBehaviour {
 				//StartCoroutine ("coAnimWalk");
 				break;
 			case 1:
-				//Debug.Log ("coAnimTurnUp");
-				StartCoroutine ("coAnimTurnUp");
+				
+				if (!TS.SwitchButton) {
+					StartCoroutine ("coAnimTurnUp");
+				}
 				//coAnimTurnUp ();
 				break;
 			case 2:
 				//Debug.Log ("coAnimTurnDown");
-				StartCoroutine ("coAnimTurnDown");
+				if (!TS.SwitchButton) {
+					StartCoroutine ("coAnimTurnDown");
+				}
 				//coAnimTurnDown();
 				break;
 			case 3:
 				//Debug.Log ("coAnimTurnLeft");
-				StartCoroutine ("coAnimTurnLeft");
+				if (!TS.SwitchButton) {
+					StartCoroutine ("coAnimTurnLeft");
+				}
 				//coAnimTurnLeft ();
 				break;
 			case 4:
 				//Debug.Log ("coAnimTurnRight");
-				StartCoroutine ("coAnimTurnRight");
+				if (!TS.SwitchButton) {
+					StartCoroutine ("coAnimTurnRight");
+				}
 				//coAnimTurnRight ();
 				break;
 			case 5:
@@ -279,50 +290,61 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator coAnimTurnUp(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		if(!TS.SwitchButtonDelay){
+			yield return new WaitForSeconds (0.55f/anim.speed);
+		}
 		transform.rotation = Quaternion.Euler (0, 0, 0);
+
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnDown(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		if(!TS.SwitchButtonDelay){
+			yield return new WaitForSeconds (0.55f/anim.speed);
+		}
 		transform.rotation = Quaternion.Euler (0, 180.0f, 0);
+
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnLeft(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		if(!TS.SwitchButtonDelay){
+			yield return new WaitForSeconds (0.55f/anim.speed);
+		}
 		transform.rotation = Quaternion.Euler (0, 270.0f, 0);
 		//anim.SetBool ("StateWalk", true);
 	}
 
 	IEnumerator coAnimTurnRight(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
-		transform.rotation = Quaternion.Euler (0, 90.0f, 0);	
+		if(!TS.SwitchButtonDelay){
+			yield return new WaitForSeconds (0.55f/anim.speed);
+		}
+		transform.rotation = Quaternion.Euler (0, 90.0f, 0);
+			
 		//anim.SetBool ("StateWalk", true);
 	}
 	IEnumerator coAnimStayOne(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		f_staytime = 1;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 
 	}
 	IEnumerator coAnimStayTwo(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		f_staytime = 2;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 	IEnumerator coAnimStayThree(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		f_staytime = 3;
 		anim.SetBool ("StateWalk", false);
 		StartCoroutine ("ReStartWalk");
 	}
 
 	IEnumerator ActionObjMove(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		StartCoroutine("ActionObjMove2");
 	}
 
@@ -333,7 +355,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionSpeed(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		StartCoroutine("ActionSpeed2");
 	}
 
@@ -344,7 +366,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionFad(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		StartCoroutine("ActionFadeInOut");
 	}
 
@@ -379,7 +401,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionPositionChange(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		anim.SetBool ("StateWalk", false);
 		f_staytime = 1;
 		StartCoroutine("ActionPositionChangeFadeOutIn");
@@ -387,7 +409,7 @@ public class csCharacterMove : MonoBehaviour {
 	IEnumerator ActionPositionChangeFadeOutIn(){
 		//
 		StartCoroutine("ActionPositionChangeFadeOut");
-		yield return new WaitForSeconds (0.5f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		transform.position += Vector3.forward * 2.0f;
 
 		StartCoroutine("ActionPositionChangeFadeIn");
@@ -417,7 +439,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionSound(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		StartCoroutine("ActionSoundOnOff");
 	}
 
@@ -428,7 +450,7 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActiondummyInstall(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 		anim.SetBool ("StateWalk", false);
 		f_staytime = 1;
 		StartCoroutine("ActiondummyInstall2");
@@ -451,9 +473,9 @@ public class csCharacterMove : MonoBehaviour {
 	}
 
 	IEnumerator ActionEMP(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 	}
 	IEnumerator ActionWire(){
-		yield return new WaitForSeconds (0.45f/anim.speed);
+		yield return new WaitForSeconds (0.55f/anim.speed);
 	}
 }
