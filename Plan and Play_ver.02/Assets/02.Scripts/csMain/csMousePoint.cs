@@ -22,13 +22,23 @@ public class csMousePoint : MonoBehaviour {
 
 	public GameObject BtnMoveState;
 	public GameObject BtnStayState;
-	public GameObject BtnMenuState;
 
 	public GameObject BtnActionState;
 
 	public static bool touchTile;
 
 	private GameObject TileState;
+
+	public GameObject BtnAction;
+
+	public Sprite ActionSprite;
+
+	public Sprite ActionObj;
+	public Sprite ActionSpeed;
+	public Sprite ActionFade;
+	public Sprite ActionPositionChange;
+	public Sprite ActionSound;
+	public Sprite ActionDummy;
 
 	public Material MatUp;
 	public Material MatDown;
@@ -131,6 +141,8 @@ public class csMousePoint : MonoBehaviour {
 
 							TouchActionNum = 0;
 							txtStatus2.text = "행동";
+							BtnAction.GetComponent<Image> ().sprite = ActionSprite;
+							SqliteActSelect.Action_Teleki--;
 
 							for (int j = 0; j < BlockObjectNum; j++){
 								if (m_BlockObject [j].layer == 8) {
@@ -193,6 +205,8 @@ public class csMousePoint : MonoBehaviour {
 							if (m_BlockObject [i] == hit.collider.gameObject) {
 								TouchActionNum = 0;
 								txtStatus2.text = "행동";
+								BtnAction.GetComponent<Image> ().sprite = ActionSprite;
+								SqliteActSelect.Action_Dummy--;
 								//선택한 타일 위치 
 								SetAction.GetComponent<Renderer> ().sharedMaterial = MatActionDummy;
 								Debug.Log (SetAction);
@@ -242,28 +256,33 @@ public class csMousePoint : MonoBehaviour {
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSpeed;
 										Tile.GetComponent<csTileState> ().stateNum = 9;
 										OrderNumPlus ();
+										SqliteActSelect.Action_Fast--;
 									}
 									if(TouchActionNum == 3){
 										//Fade
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionFade;
 										Tile.GetComponent<csTileState> ().stateNum = 10;
 										OrderNumPlus ();
+										SqliteActSelect.Action_Stealth--;
 									}
 									if(TouchActionNum == 4){
 										//위치이동
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionPositionChange;
 										Tile.GetComponent<csTileState> ().stateNum = 11;
 										OrderNumPlus ();
+										SqliteActSelect.Action_Telepo--;
 									}
 									if(TouchActionNum == 5){
 										//Sound
 										Tile.GetComponent<Renderer> ().sharedMaterial = MatActionSound;
 										Tile.GetComponent<csTileState> ().stateNum = 12;
 										OrderNumPlus ();
+										SqliteActSelect.Action_Mute--;
 									}
 
 									TouchActionNum = 0;
 									txtStatus2.text = "행동";
+									BtnAction.GetComponent<Image> ().sprite = ActionSprite;
 									touchTile = true;
 								} 
 								else {
@@ -274,7 +293,6 @@ public class csMousePoint : MonoBehaviour {
 									//Debug.Log (TileST.stateNum);
 
 									BtnState.SetActive (true);
-									BtnMenuState.SetActive (false);
 									touchTile = false;
 									cameraPosition ();
 								}
@@ -286,7 +304,6 @@ public class csMousePoint : MonoBehaviour {
 						touchTile = true;
 						BtnState.SetActive(false);
 						BtnMoveState.SetActive(false);
-						BtnMenuState.SetActive (false);
 						if (Tile == blankTile) {
 							return;
 						}
@@ -631,64 +648,95 @@ public class csMousePoint : MonoBehaviour {
 			BtnActionState.SetActive (false);
 		} else {
 			BtnActionState.SetActive(true);
+
+			//actionCount
+			GameObject text1 = GameObject.Find ("Canvas/ActionState/BtnObjMove/CountText");
+			text1.GetComponent<Text> ().text = SqliteActSelect.Action_Teleki.ToString ();
+
+			GameObject text2 = GameObject.Find ("Canvas/ActionState/BtnSpeed/CountText");
+			text2.GetComponent<Text> ().text = SqliteActSelect.Action_Fast.ToString ();
+
+			GameObject text3 = GameObject.Find ("Canvas/ActionState/BtnFade/CountText");
+			text3.GetComponent<Text> ().text = SqliteActSelect.Action_Stealth.ToString ();
+
+			GameObject text4 = GameObject.Find ("Canvas/ActionState/BtnPositionChange/CountText");
+			text4.GetComponent<Text> ().text = SqliteActSelect.Action_Telepo.ToString ();
+
+			GameObject text5 = GameObject.Find ("Canvas/ActionState/BtnSound/CountText");
+			text5.GetComponent<Text> ().text = SqliteActSelect.Action_Mute.ToString ();
+
+			GameObject text6 = GameObject.Find ("Canvas/ActionState/BtnBoxInstall/CountText");
+			text6.GetComponent<Text> ().text = SqliteActSelect.Action_Dummy.ToString ();
+
 		}
 		BtnStayState.SetActive(false);
 		BtnMoveState.SetActive(false);
 	}
 
 	public void BtnActionObjMove(){
-		txtStatus2.text = "오브젝트";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Teleki == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionObj;
 		TouchActionNum = 1;
 		touchTile = false;
+
 	}
 
 	public void BtnActionSpeed(){
-		txtStatus2.text = "가 속";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Fast == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionSpeed;
 		TouchActionNum = 2;
 		touchTile = false;
 	}
 
 	public void BtnActionFade(){
-		txtStatus2.text = "은 신";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Stealth == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionFade;
 		TouchActionNum = 3;
 		touchTile = false;
 	}
 
 	public void BtnActionPositionChange(){
-		txtStatus2.text = "위치 이동";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Telepo == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionPositionChange;
 		TouchActionNum = 4;
 		touchTile = false;
 	}
 
 	public void BtnActionSound(){
-		txtStatus2.text = "무음기동";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Mute == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionSound;
 		TouchActionNum = 5;
 		touchTile = false;
 	}
 
 	public void BtnActiondummyInstall(){
-		txtStatus2.text = "더미설치";
 		BtnActionState.SetActive (false);
+		if(SqliteActSelect.Action_Dummy == 0){
+			return;
+		}
+		txtStatus2.text = "";
+		BtnAction.GetComponent<Image> ().sprite = ActionDummy;
 		TouchActionNum = 6;
-		touchTile = false;
-	}
-
-	public void BtnActionEMP(){
-		txtStatus2.text = "EMP";
-		BtnActionState.SetActive (false);
-		TouchActionNum = 7;
-		touchTile = false;
-	}
-
-	public void BtnActionWire(){
-		txtStatus2.text = "와이어";
-		BtnActionState.SetActive (false);
-		TouchActionNum = 8;
 		touchTile = false;
 	}
 
@@ -701,7 +749,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 1;
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -713,7 +760,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 2;
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -725,7 +771,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 3;
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -737,7 +782,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 4;
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -750,7 +794,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 5;
 		BtnState.SetActive(false);
 		BtnStayState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -763,7 +806,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 6;
 		BtnState.SetActive(false);
 		BtnStayState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -776,7 +818,6 @@ public class csMousePoint : MonoBehaviour {
 		TileST.stateNum = 7;
 		BtnState.SetActive(false);
 		BtnStayState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -794,7 +835,6 @@ public class csMousePoint : MonoBehaviour {
 		BtnState.SetActive(false);
 		BtnMoveState.SetActive(false);
 		BtnStayState.SetActive(false);
-		BtnMenuState.SetActive (false);
 		//touchTile = true;
 		TileSelect = false;
 
@@ -803,11 +843,13 @@ public class csMousePoint : MonoBehaviour {
 
 	void OrderNumPlus(){
 		OrderNum++;
+		Debug.Log ("OrderNumPlus");
 		txtStatus1.text = "Order " + OrderNum;
 	}
 
 	void OrderNumMinus(){
 		OrderNum--;
+		Debug.Log ("OrderNumMinus");
 		txtStatus1.text = "Order " + OrderNum;
 	}
 }
