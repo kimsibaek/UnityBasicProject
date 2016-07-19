@@ -8,9 +8,9 @@ public class csCharacterMove : MonoBehaviour {
 	public static bool b_PlayTime;
 	public static float PlayTime;
 
-	bool b_StartMove;
+	public static bool b_StartMove;
 
-	private bool StartPlay;
+	public static bool StartPlay;
 
 	public static bool GameOver;
 
@@ -24,13 +24,13 @@ public class csCharacterMove : MonoBehaviour {
 	GameObject Startobj;
 	Text StarttxtStatus;
 
-	bool SpeedGame;
+	public static bool SpeedGame;
 	// Use this for initialization
 
 	public Material Mat1;
 	public Material Mat2;
 
-	public bool CharacterNoSound;
+	public static bool CharacterNoSound;
 
 	public GameObject Dummy;
 
@@ -79,7 +79,7 @@ public class csCharacterMove : MonoBehaviour {
 		anim.SetBool ("StateWalk", true);
 	}
 
-	void PlayTimeUpdate(){
+	public void PlayTimeUpdate(){
 		string hour;
 		string second;
 
@@ -243,7 +243,7 @@ public class csCharacterMove : MonoBehaviour {
 				b_PlayTime = false;
 				anim.SetBool ("StateWalk", false);
 				//Debug.Log ("일시정지");
-				StarttxtStatus.text = "일시정지";
+				StarttxtStatus.text = "재생";
 				Time.timeScale = 0;
 
 			} else {
@@ -251,7 +251,7 @@ public class csCharacterMove : MonoBehaviour {
 				anim.SetBool ("StateWalk", true);
 				//Debug.Log ("재생");
 
-				StarttxtStatus.text = "재생";
+				StarttxtStatus.text = "일시정지";
 				Time.timeScale = 1;
 			}
 		}

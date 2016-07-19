@@ -346,6 +346,11 @@ public class InstantGuiElement : MonoBehaviour
 					Application.Quit();
 					#endif
 				}
+
+				if (gameObject.name == "BackBtn") {
+					Application.LoadLevel ("Scene_Lobby");
+				}
+
 				if(gameObject.name == "C1_Image"){
 					csChaperStageNum.Chapter = 1;
 				}else if(gameObject.name == "C2_Image"){
@@ -368,7 +373,7 @@ public class InstantGuiElement : MonoBehaviour
 				if(gameObject.name == "S t a r t"){
 					if(csChaperStageNum.Chapter == 1){
 						if(csChaperStageNum.Stage == 1){
-							Application.LoadLevel ("Stage-1");
+							Application.LoadLevel ("Stage1");
 						}
 						else if(csChaperStageNum.Stage == 2){
 							Application.LoadLevel ("Stage-2");
@@ -378,12 +383,144 @@ public class InstantGuiElement : MonoBehaviour
 						}
 					}
 				}
-
-
-
-
-
-
+				///////////////////////Action_Telepo////////////////////////////////
+				if (gameObject.name == "Telepo_Minus") {
+					if(SqliteActSelect.Action_Telepo == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Teleportation_Window/0");
+					SqliteActSelect.Action_Telepo--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Telepo.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Telepo_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Teleportation_Window/0");
+					SqliteActSelect.Action_Telepo++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Telepo.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				///////////////////////Action_Teleki//////////////////////////////////////
+				if (gameObject.name == "Teleki_Minus") {
+					if(SqliteActSelect.Action_Teleki == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Telekinesis_Window/0");
+					SqliteActSelect.Action_Teleki--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Teleki.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Teleki_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Telekinesis_Window/0");
+					SqliteActSelect.Action_Teleki++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Teleki.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				///////////////////////Action_Fast//////////////////////////////////////
+				if (gameObject.name == "Fast_Minus") {
+					if(SqliteActSelect.Action_Fast == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Fast_Window/0");
+					SqliteActSelect.Action_Fast--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Fast.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Fast_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Fast_Window/0");
+					SqliteActSelect.Action_Fast++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Fast.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				///////////////////////Action_Stealth//////////////////////////////////////
+				if (gameObject.name == "Stealth_Minus") {
+					if(SqliteActSelect.Action_Stealth == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Stealth_Window/0");
+					SqliteActSelect.Action_Stealth--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Stealth.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Stealth_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Stealth_Window/0");
+					SqliteActSelect.Action_Stealth++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Stealth.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				///////////////////////Action_Mute//////////////////////////////////////
+				if (gameObject.name == "Mute_Minus") {
+					if(SqliteActSelect.Action_Mute == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Mute_Window/0");
+					SqliteActSelect.Action_Mute--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Mute.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Mute_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Mute_Window/0");
+					SqliteActSelect.Action_Mute++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Mute.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				///////////////////////Action_Dummy//////////////////////////////////////
+				if (gameObject.name == "Dummy_Minus") {
+					if(SqliteActSelect.Action_Dummy == 0){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Dummy_Window/0");
+					SqliteActSelect.Action_Dummy--;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Dummy.ToString();
+					SqliteActSelect.MySP += 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
+				if (gameObject.name == "Dummy_Plus") {
+					if(SqliteActSelect.MySP < 3){
+						return;
+					}
+					GameObject obj1 = GameObject.Find ("InstantGUI/StageNumber/Act Select/Dummy_Window/0");
+					SqliteActSelect.Action_Dummy++;
+					obj1.GetComponent<InstantGuiElement> ().text = SqliteActSelect.Action_Dummy.ToString();
+					SqliteActSelect.MySP -= 3;
+					GameObject obj2 = GameObject.Find ("InstantGUI/StageNumber/SPWindow/MySP");
+					obj2.GetComponent<InstantGuiButton> ().text = SqliteActSelect.MySP.ToString();
+				}
 
 				pressed = true; 
 				holdingPressed = true; 
